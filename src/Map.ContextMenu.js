@@ -1,5 +1,4 @@
 L.Map.mergeOptions({
-	contextmenuWidth: 150,
 	contextmenuItems: []
 });
 

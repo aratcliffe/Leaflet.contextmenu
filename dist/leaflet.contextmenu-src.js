@@ -3,7 +3,6 @@
 	(c) 2013, Adam Ratcliffe, GeoSmart Maps Limited
 */
 L.Map.mergeOptions({
-	contextmenuWidth: 150,
 	contextmenuItems: []
 });
 
