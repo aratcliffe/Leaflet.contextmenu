@@ -52,11 +52,11 @@ L.Map.ContextMenu = L.Handler.extend({
 		}, this);
 	},
 
-	showAt: function (point) {
+	showAt: function (point, data) {
 		if (point instanceof L.LatLng) {
 			point = this._map.latLngToContainerPoint(point);
 		}
-		this._showAtPoint(point);
+		this._showAtPoint(point, data);
 	},
 
 	hide: function () {
@@ -139,25 +139,25 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_createItems: function () {
-		var spec = this._map.options.contextmenuItems,
+		var itemOptions = this._map.options.contextmenuItems,
 		    item,
 		    i, l;
 
-		for (i = 0, l = spec.length; i < l; i++) {
-			this._items.push(this._createItem(this._container, spec[i]));
+		for (i = 0, l = itemOptions.length; i < l; i++) {
+			this._items.push(this._createItem(this._container, itemOptions[i]));
 		}
 	},
 
 	_createItem: function (container, options, index) {
-		if (typeof options === 'string' && options === '-') {
-			return this._createSeparator(container);
+		if (options.separator || options === '-') {
+			return this._createSeparator(container, index);
 		}
 
 		var itemCls = L.Map.ContextMenu.BASE_CLS + '-item', 
-		cls = options.disabled ? (itemCls + ' ' + itemCls + '-disabled') : itemCls,
-		el = this._insertElementAt('a', cls, container, index),
-		callback = this._createEventHandler(el, options.callback, options.context),
-		html = '';
+		    cls = options.disabled ? (itemCls + ' ' + itemCls + '-disabled') : itemCls,
+		    el = this._insertElementAt('a', cls, container, index),
+		    callback = this._createEventHandler(el, options.callback, options.context),
+		    html = '';
 		
 		if (options.icon) {
 			html = '<img class="' + L.Map.ContextMenu.BASE_CLS + '-icon" src="' + options.icon + '"/>';
@@ -212,8 +212,8 @@ L.Map.ContextMenu = L.Handler.extend({
 		return null;
 	},
 
-	_createSeparator: function (container) {
-		var el = L.DomUtil.create('div', L.Map.ContextMenu.BASE_CLS + '-separator', container);
+	_createSeparator: function (container, index) {
+		var el = this._insertElementAt('div', L.Map.ContextMenu.BASE_CLS + '-separator', container, index);
 		
 		return {
 			id: L.Util.stamp(el),
@@ -223,8 +223,8 @@ L.Map.ContextMenu = L.Handler.extend({
 
 	_createEventHandler: function (el, func, context) {
 		var me = this,
-		map = this._map,
-		disabledCls = L.Map.ContextMenu.BASE_CLS + '-item-disabled';
+		    map = this._map,
+		    disabledCls = L.Map.ContextMenu.BASE_CLS + '-item-disabled';
 		
 		return function (e) {
 			if (L.DomUtil.hasClass(el, disabledCls)) {
@@ -243,7 +243,7 @@ L.Map.ContextMenu = L.Handler.extend({
 
 	_insertElementAt: function (tagName, className, container, index) {
 		var refEl,
-		  el = document.createElement(tagName);
+		    el = document.createElement(tagName);
 
 		el.className = className;
 
@@ -264,12 +264,17 @@ L.Map.ContextMenu = L.Handler.extend({
 		this._showAtPoint(e.containerPoint);
 	},
 
-	_showAtPoint: function (pt) {
+	_showAtPoint: function (pt, data) {
 		if (!this._visible && this._items.length) {
 			var map = this._map,
 			    layerPoint = map.containerPointToLayerPoint(pt),
 			    latlng = map.layerPointToLatLng(layerPoint),
-			    container = this._container;
+			    container = this._container,
+			    eventData = {contextmenu: this};
+
+			if (data) {
+				L.extend(data, eventData);
+			}
 
 			this._showLocation = {
 				latlng: latlng,
@@ -282,7 +287,7 @@ L.Map.ContextMenu = L.Handler.extend({
 			
 			this._visible = true;				
 
-			this._map.fire('contextmenu.show', {contextmenu: this});
+			this._map.fire('contextmenu.show', eventData);
 		}		
 	},
 

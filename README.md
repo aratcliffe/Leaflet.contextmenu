@@ -34,7 +34,7 @@ var map = L.map('map', {
 | --- | --- | --- | ---
 | contextmenu | Bool | `false` | Enables the context menu.
 | contextmenuWidth | Number | `undefined` | If defined sets the context menu width, if `undefined` the menu will be sized by the maximum width of its menu items.
-| contextmenuItems | Array | `[]` | Specification for the context menu items. See following options for individual menu items. A separator can be added with a dash character `'-'`.
+| contextmenuItems | Array | `[]` | Specification for the context menu items. See following options for individual menu items. A separator may also be added with a dash character `'-'`.
 
 ####Menu Item Options
 
@@ -46,15 +46,16 @@ var map = L.map('map', {
 | callback | Function | `undefined` | A callback function to be invoked when the menu item is clicked. The callback is passed an object with properties identifying the location the menu was opened at: `latlng`, `layerPoint` and `containerPoint`.
 | context | Object | The map | The scope the callback will be executed in.
 | disabled | Bool | `false` | If `true` the menu item will initially be in a disabled state and will not respond to click events.
+| separator | Bool | `undefined` | If `true` a separator will be created instead of a menu item.
 
 ###Methods
 
 A reference to the map's context menu can be obtained through the map variable e.g. `map.contextmenu`.
 
 ````javascript
-showAt(L.Point/L.LatLng)
+showAt(L.Point/L.LatLng, [data])
 ````
-Opens the map's context menu at the specified point.
+Opens the map's context menu at the specified point. `data` is an optional hash of key/value pairs that will be included on the map's `contextmenu.show` event.
 
 ````javascript
 hide()

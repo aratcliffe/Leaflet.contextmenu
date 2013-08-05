@@ -8,7 +8,8 @@
   <body>
     <div id="map" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
     <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
-    <script src="../dist/leaflet.contextmenu.js"></script>
+    <script src="../src/Map.ContextMenu.js"></script>
+    <script src="../src/Mixin.ContextMenu.js"></script>
     <script>
       var map,
           cm,
@@ -55,6 +56,20 @@
 	  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 		  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 	  }).addTo(map);
+
+      L.Marker.include(L.Mixin.ContextMenu);
+
+      L.marker(ll, {
+          title: 'Test Marker',
+          contextmenu: true,
+          contextmenuItems: [{
+              text: 'Marker item',
+              index: 0
+          }, {
+              separator: true,
+              index: 1
+          }]
+      }).addTo(map);
 
     </script>
   </body>
