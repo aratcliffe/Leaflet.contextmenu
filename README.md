@@ -77,6 +77,11 @@ removeItem(HTMLElement/index)
 Removes a menu item.
 
 ````javascript
+removeAllItems()
+````
+Removes all menu items.
+
+````javascript
 setDisabled(HTMLElement/index, disabled)
 ````
 Set's the disabled state of a menu item.
@@ -105,6 +110,15 @@ Fired when the context menu is hidden.
 | Property | Type | Description
 | --- | --- | ---
 | contextmenu | Map.ContextMenu | The context menu.
+
+####contextmenu.select
+
+Fired when a context menu item is selected.
+
+| Property | Type | Description
+| --- | --- | ---
+| contextmenu | Map.ContextMenu | The context menu.
+| el | HTMLElement | The context menu item element that was selected.
 
 ####contextmenu.additem
 
