@@ -231,18 +231,8 @@ L.Map.ContextMenu = L.Handler.extend({
 				return;
 			}
 
-			me._hide();
-			
-			var containerPoint = map.mouseEventToContainerPoint(e),
-			    layerPoint = map.containerPointToLayerPoint(containerPoint),
-			    latlng = map.layerPointToLatLng(layerPoint);
-
-			func.call(context || map, {
-				latlng: latlng,
-				layerPoint: layerPoint,
-				containerPoint: containerPoint,
-				originalEvent: e
-			});			
+			me._hide();			
+			func.call(context || map, me._showLocation);			
 
 			this.fire('contextmenu:select', {
 				contextmenu: this,
@@ -276,7 +266,16 @@ L.Map.ContextMenu = L.Handler.extend({
 
 	_showAtPoint: function (pt) {
 		if (!this._visible && this._items.length) {
-			var container = this._container;
+			var map = this._map,
+			    layerPoint = map.containerPointToLayerPoint(pt),
+			    latlng = map.layerPointToLatLng(layerPoint),
+			    container = this._container;
+
+			this._showLocation = {
+				latlng: latlng,
+				layerPoint: layerPoint,
+				containerPoint: pt,
+			};
 			
 			L.DomUtil.setPosition(container, pt);
 			container.style.display = 'block';

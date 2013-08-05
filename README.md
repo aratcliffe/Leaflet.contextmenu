@@ -43,7 +43,7 @@ var map = L.map('map', {
 | text | String | `undefined` | The label to use for the menu item (required).
 | icon | String | `undefined` | Url for a 16x16px icon to display to the left of the label.
 | iconCls | String | `undefined` | A CSS class which sets the background image for the icon (exclusive of the `icon` option).
-| callback | Function | `undefined` | A callback function to be invoked when the menu item is clicked. The callback is passed a [MouseEvent](http://leafletjs.com/reference.html#event-objects) object.
+| callback | Function | `undefined` | A callback function to be invoked when the menu item is clicked. The callback is passed an object with properties identifying the location the menu was opened at: `latlng`, `layerPoint` and `containerPoint`.
 | context | Object | The map | The scope the callback will be executed in.
 | disabled | Bool | `false` | If `true` the menu item will initially be in a disabled state and will not respond to click events.
 
