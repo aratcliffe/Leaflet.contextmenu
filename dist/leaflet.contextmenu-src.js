@@ -8,13 +8,17 @@ L.Map.mergeOptions({
 
 L.Map.ContextMenu = L.Handler.extend({
 
+	statics: {
+		BASE_CLS: 'leaflet-contextmenu'
+	},
+
 	initialize: function (map) {
 		L.Handler.prototype.initialize.call(this, map);
 
 		this._items = [];
 		this._visible = false;
 
-		var container = this._container = L.DomUtil.create('div', 'leaflet-contextmenu', map._container);
+		var container = this._container = L.DomUtil.create('div', L.Map.ContextMenu.BASE_CLS, map._container);
 		container.style.zIndex = 10000;
 		container.style.position = 'absolute';
 
@@ -93,6 +97,28 @@ L.Map.ContextMenu = L.Handler.extend({
 		}		
 	},
 
+	setDisabled: function (disabled, index) {
+		var container = this._container,
+		el = container.children[index],
+		itemCls = L.Map.ContextMenu.BASE_CLS + '-item';
+
+		if (el && L.DomUtil.hasClass(el, itemCls)) {
+			if (disabled) {
+				L.DomUtil.addClass(el, itemCls + '-disabled');
+				this._map.fire('contextmenu.disableitem', {
+					contextmenu: this,
+					el: item.el
+				});
+			} else {
+				L.DomUtil.removeClass(el, itemCls + '-disabled');
+				this._map.fire('contextmenu.enableitem', {
+					contextmenu: this,
+					el: item.el
+				});
+			}			
+		}
+	},
+
 	isVisible: function () {
 		return this._visible;
 	},
@@ -112,19 +138,21 @@ L.Map.ContextMenu = L.Handler.extend({
 			return this._createSeparator(container);
 		}
 
-		var el = this._insertElementAt('a', 'leaflet-contextmenu-item', container, index),
+		var itemCls = L.Map.ContextMenu.BASE_CLS + '-item', 
+		cls = options.disabled ? (itemCls + ' ' + itemCls + '-disabled') : itemCls,
+		el = this._insertElementAt('a', cls, container, index),
 		callback = this._createEventHandler(options.callback, options.context),
 		html = '';
 		
 		if (options.icon) {
-			html = '<img class="leaflet-contextmenu-icon" src="' + options.icon + '"/>';
+			html = '<img class="' + L.Map.ContextMenu.BASE_CLS + '-icon" src="' + options.icon + '"/>';
 		} else if (options.iconCls) {
-			html = '<span class="leaflet-contextmenu-icon ' + options.iconCls + '"></span>';
+			html = '<span class="' + L.Map.ContextMenu.BASE_CLS + '-icon ' + options.iconCls + '"></span>';
 		}
 
 		el.innerHTML = html + options.text;		
 		el.href = '#';
-		
+
 		L.DomEvent
 			.on(el, 'click', L.DomEvent.stopPropagation)
 			.on(el, 'mousedown', L.DomEvent.stopPropagation)
@@ -170,7 +198,7 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_createSeparator: function (container) {
-		var el = L.DomUtil.create('div', 'leaflet-contextmenu-separator', container);
+		var el = L.DomUtil.create('div', L.Map.ContextMenu.BASE_CLS + '-separator', container);
 		
 		return {
 			id: L.Util.stamp(el),
@@ -183,6 +211,13 @@ L.Map.ContextMenu = L.Handler.extend({
 		me = this;
 		
 		return function (e) {
+			var el = e.target,
+			disabledCls = L.Map.ContextMenu.BASE_CLS + '-item-disabled';
+
+			if (L.DomUtil.hasClass(el, disabledCls) || L.DomUtil.hasClass(el.parentElement, disabledCls)) {
+				return;
+			}
+
 			me._hide();
 			
 			var containerPoint = map.mouseEventToContainerPoint(e),

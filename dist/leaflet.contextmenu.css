@@ -8,7 +8,7 @@
     cursor: default;
 }
 
-.leaflet-contextmenu .leaflet-contextmenu-item {
+a.leaflet-contextmenu-item {
     display: block;
     color: #222;
     font-size: 12px;
@@ -20,7 +20,23 @@
     cursor: default;
 }
 
-.leaflet-contextmenu .leaflet-contextmenu-icon {
+a.leaflet-contextmenu-item-disabled {
+    opacity: 0.5;
+}
+
+a.leaflet-contextmenu-item:hover {
+    background-color: #f4f4f4;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+a.leaflet-contextmenu-item-disabled:hover {
+    background-color: inherit;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+}
+
+.leaflet-contextmenu-icon {
     margin: 2px 8px 0 0;
     width: 16px;
     height: 16px;
@@ -28,13 +44,7 @@
     border: 0;
 }
 
-.leaflet-contextmenu .leaflet-contextmenu-item:hover {
-    background-color: #f4f4f4;
-    border-top: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.leaflet-contextmenu .leaflet-contextmenu-separator {
+.leaflet-contextmenu-separator {
     border-bottom: 1px solid #ccc;
     margin: 5px 0;
 }

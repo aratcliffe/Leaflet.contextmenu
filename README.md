@@ -45,6 +45,7 @@ var map = L.map('map', {
 | iconCls | String | `undefined` | A CSS class which sets the background image for the icon (exclusive of the `icon` option).
 | callback | Function | `undefined` | A callback function to be invoked when the menu item is clicked. The callback is passed a [MouseEvent](http://leafletjs.com/reference.html#event-objects) object.
 | context | Object | The map | The scope the callback will be executed in.
+| disabled | Bool | `false` | If `true` the menu item will initially be in a disabled state and will not respond to click events.
 
 ###Methods
 
@@ -74,6 +75,11 @@ Adds a new menu item to the context menu at the specified index. If the index is
 removeItem(index)
 ````
 Removes the menu item at the specified index.
+
+````javascript
+setDisabled(disabled, index)
+````
+Set's the disabled state of the menu item at the specified index.
 
 ````javascript
 isVisible()
@@ -113,6 +119,24 @@ Fired when a menu item is added to the context menu.
 ####contextmenu.removeitem
 
 Fired when a menu item is removed from the context menu.
+
+| Property | Type | Description
+| --- | --- | ---
+| contextmenu | Map.ContextMenu | The context menu.
+| el | HTMLElement | The context menu item element.
+
+####contextmenu.enableitem
+
+Fired when a menu item is enabled.
+
+| Property | Type | Description
+| --- | --- | ---
+| contextmenu | Map.ContextMenu | The context menu.
+| el | HTMLElement | The context menu item element.
+
+####contextmenu.disableitem
+
+Fired when a menu item is disabled.
 
 | Property | Type | Description
 | --- | --- | ---
