@@ -8,7 +8,7 @@
     cursor: default;
 }
 
-a.leaflet-contextmenu-item {
+.leaflet-contextmenu a.leaflet-contextmenu-item {
     display: block;
     color: #222;
     font-size: 12px;
@@ -20,17 +20,17 @@ a.leaflet-contextmenu-item {
     cursor: default;
 }
 
-a.leaflet-contextmenu-item-disabled {
+.leaflet-contextmenu a.leaflet-contextmenu-item-disabled {
     opacity: 0.5;
 }
 
-a.leaflet-contextmenu-item:hover {
+.leaflet-contextmenu a.leaflet-contextmenu-item:hover {
     background-color: #f4f4f4;
     border-top: 1px solid #f0f0f0;
     border-bottom: 1px solid #f0f0f0;
 }
 
-a.leaflet-contextmenu-item-disabled:hover {
+.leaflet-contextmenu a.leaflet-contextmenu-item-disabled:hover {
     background-color: inherit;
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent;

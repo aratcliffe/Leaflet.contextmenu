@@ -72,14 +72,14 @@ insertItem(options, index)
 Adds a new menu item to the context menu at the specified index. If the index is invalid the menu item will be appended to the menu.
 
 ````javascript
-removeItem(index)
+removeItem(HTMLElement/index)
 ````
-Removes the menu item at the specified index.
+Removes a menu item.
 
 ````javascript
-setDisabled(disabled, index)
+setDisabled(HTMLElement/index, disabled)
 ````
-Set's the disabled state of the menu item at the specified index.
+Set's the disabled state of a menu item.
 
 ````javascript
 isVisible()

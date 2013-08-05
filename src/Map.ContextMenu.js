@@ -34,6 +34,8 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	addHooks: function () {
+		L.DomEvent.on(document, 'keydown', this._onKeyDown, this);
+
 		this._map.on({
 			contextmenu: this._show,
 			mouseout: this._hide,
@@ -42,6 +44,8 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	removeHooks: function () {
+		L.DomEvent.off(document, 'keydown', this._onKeyDown, this);
+
 		this._map.off({
 			contextmenu: this._show,
 			mouseout: this._hide,
@@ -61,7 +65,7 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	addItem: function (options) {
-		this.insertItem(options);
+		return this.insertItem(options);
 	},
 
 	insertItem: function (options, index) {
@@ -76,40 +80,47 @@ L.Map.ContextMenu = L.Handler.extend({
 			el: item.el,
 			index: index
 		});
+
+		return item.el;
 	},
 
-	removeItem: function (index) {
-		var container = this._container,
-		el = container.children[index],
-		item;
+	removeItem: function (item) {
+		var container = this._container;
 
-		if (el) {
-			item = this._removeItem(L.Util.stamp(el));
+		if (!isNaN(item)) {
+			item = container.children[item];
+		}
+
+		if (item) {
+			this._removeItem(L.Util.stamp(item));
 
 			this._map.fire('contextmenu.removeitem', {
 				contextmenu: this,
-				el: item.el
+				el: item
 			});
 		}		
 	},
 
-	setDisabled: function (disabled, index) {
+	setDisabled: function (item, disabled) {
 		var container = this._container,
-		el = container.children[index],
 		itemCls = L.Map.ContextMenu.BASE_CLS + '-item';
 
-		if (el && L.DomUtil.hasClass(el, itemCls)) {
+		if (!isNaN(item)) {
+			item = container.children[item];
+		}
+
+		if (item && L.DomUtil.hasClass(item, itemCls)) {
 			if (disabled) {
-				L.DomUtil.addClass(el, itemCls + '-disabled');
+				L.DomUtil.addClass(item, itemCls + '-disabled');
 				this._map.fire('contextmenu.disableitem', {
 					contextmenu: this,
-					el: item.el
+					el: item
 				});
 			} else {
-				L.DomUtil.removeClass(el, itemCls + '-disabled');
+				L.DomUtil.removeClass(item, itemCls + '-disabled');
 				this._map.fire('contextmenu.enableitem', {
 					contextmenu: this,
-					el: item.el
+					el: item
 				});
 			}			
 		}
@@ -272,6 +283,15 @@ L.Map.ContextMenu = L.Handler.extend({
 			this._visible = false;
 
 			this._map.fire('contextmenu.hide', {contextmenu: this});
+		}
+	},
+
+	_onKeyDown: function (e) {
+		var key = e.keyCode;
+
+		// If ESC pressed and context menu is visible hide it 
+		if (key === 27  && this._visible) {
+			this._hide();
 		}
 	}
 });
