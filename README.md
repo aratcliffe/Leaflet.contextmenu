@@ -27,6 +27,23 @@ var map = L.map('map', {
 });    
 ````
 
+The context menu mixin can be used to allow markers to extend the map context menu with their own menu items. In addition to the usual menu item options marker's also accept an `index` option that specifies where the menu item should be inserted relative to the existing map menu items.
+
+````javascript
+L.Marker.include(L.Mixin.ContextMenu);
+
+L.marker(ll, {
+    contextmenu: true,
+    contextmenuItems: [{
+        text: 'Marker item',
+        index: 0
+    }, {
+        separator: true,
+        index: 1
+    }]
+}).addTo(map);
+````
+
 ###All Options
 ####Map Context Menu Options
 

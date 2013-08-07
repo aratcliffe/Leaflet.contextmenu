@@ -1,3 +1,7 @@
+/*
+	Leaflet.contextmenu, a context menu for Leaflet.
+	(c) 2013, Adam Ratcliffe, GeoSmart Maps Limited
+*/
 L.Map.mergeOptions({
 	contextmenuItems: []
 });
@@ -17,7 +21,6 @@ L.Map.ContextMenu = L.Handler.extend({
 		var container = this._container = L.DomUtil.create('div', L.Map.ContextMenu.BASE_CLS, map._container);
 		container.style.zIndex = 10000;
 		container.style.position = 'absolute';
-		this._container = container;
 
 		if (map.options.contextmenuWidth) {
 			container.style.width = map.options.contextmenuWidth + 'px';
@@ -234,8 +237,8 @@ L.Map.ContextMenu = L.Handler.extend({
 			me._hide();			
 			func.call(context || map, me._showLocation);			
 
-			this.fire('contextmenu:select', {
-				contextmenu: this,
+			me._map.fire('contextmenu:select', {
+				contextmenu: me,
 				el: el
 			});
 		};
@@ -269,11 +272,10 @@ L.Map.ContextMenu = L.Handler.extend({
 			var map = this._map,
 			    layerPoint = map.containerPointToLayerPoint(pt),
 			    latlng = map.layerPointToLatLng(layerPoint),
-			    container = this._container,
-			    eventData = {contextmenu: this};
+			    event = {contextmenu: this};
 
 			if (data) {
-				L.extend(data, eventData);
+				event = L.extend(data, event);
 			}
 
 			this._showLocation = {
@@ -281,13 +283,12 @@ L.Map.ContextMenu = L.Handler.extend({
 				layerPoint: layerPoint,
 				containerPoint: pt,
 			};
-			
-			L.DomUtil.setPosition(container, pt);
-			container.style.display = 'block';
-			
+
+			this._setPosition(pt);
+			this._container.style.display = 'block';			
 			this._visible = true;				
 
-			this._map.fire('contextmenu.show', eventData);
+			this._map.fire('contextmenu.show', event);
 		}		
 	},
 
@@ -301,6 +302,46 @@ L.Map.ContextMenu = L.Handler.extend({
 		}
 	},
 
+	_setPosition: function (pt) {
+		var mapSize = this._map.getSize(),
+		    container = this._container,
+		    containerSize = this._getElementSize(container);
+
+		container._leaflet_pos = pt;
+
+		if (pt.x + containerSize.x > mapSize.x) {
+			container.style.left = 'auto';
+			container.style.right = (mapSize.x - pt.x) + 'px';
+		} else {
+			container.style.left = pt.x + 'px';
+			container.style.right = 'auto';
+		}
+		
+		if (pt.y + containerSize.y > mapSize.y) {
+			container.style.top = 'auto';
+			container.style.bottom = (mapSize.y - pt.y) + 'px';
+		} else {
+			container.style.top = pt.y + 'px';
+			container.style.bottom = 'auto';
+		}
+	},
+
+	_getElementSize: function (el) {		
+		var size = {};
+
+		el.style.left = '-999999px';
+		el.style.right = 'auto';
+		el.style.display = 'block';
+
+		size.x = el.offsetWidth;
+		size.y = el.offsetHeight;
+
+		el.style.left = 'auto';
+		el.style.display = 'none';
+
+		return size;
+	},
+
 	_onKeyDown: function (e) {
 		var key = e.keyCode;
 
@@ -312,3 +353,51 @@ L.Map.ContextMenu = L.Handler.extend({
 });
 
 L.Map.addInitHook('addHandler', 'contextmenu', L.Map.ContextMenu);
+L.Mixin.ContextMenu = {
+
+	_initContextMenu: function () {
+		if (this.options.contextmenuItems.length) {
+			this._items = [];
+
+			this.on('contextmenu', this._showContextMenu, this);
+		}
+	},
+
+	_showContextMenu: function (e) {
+		var itemOptions,
+		    pt, i, l;
+
+		if (this._map.contextmenu) {
+			pt = this._map.mouseEventToContainerPoint(e.originalEvent);
+
+			for (i = 0, l = this.options.contextmenuItems.length; i < l; i++) {
+				itemOptions = this.options.contextmenuItems[i];
+				this._items.push(this._map.contextmenu.insertItem(itemOptions, itemOptions.index));
+			}
+
+			this._map.once('contextmenu.hide', this._hideContextMenu, this);
+		
+			this._map.contextmenu.showAt(pt, {relatedTarget: this});
+		}
+	},
+
+	_hideContextMenu: function () {
+		var i, l;
+
+		for (i = 0, l = this._items.length; i < l; i++) {
+			this._map.contextmenu.removeItem(this._items[i]);
+		}
+		this._items.length = 0;		
+	}	
+};
+
+L.Marker.mergeOptions({
+	contextmenu: false,
+	contextmenuItems: []
+});
+
+L.Marker.addInitHook(function () {
+	if (this.options.contextmenu) {
+		this._initContextMenu();
+	}
+});
