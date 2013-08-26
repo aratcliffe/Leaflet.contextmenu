@@ -46,3 +46,5 @@ L.Marker.addInitHook(function () {
 		this._initContextMenu();
 	}
 });
+
+L.Marker.include(L.Mixin.ContextMenu);

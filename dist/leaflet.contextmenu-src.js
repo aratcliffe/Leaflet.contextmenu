@@ -29,10 +29,10 @@ L.Map.ContextMenu = L.Handler.extend({
 		this._createItems();
 		
 		L.DomEvent
-			.on(container, 'click', L.DomEvent.stopPropagation)
-			.on(container, 'mousedown', L.DomEvent.stopPropagation)
-			.on(container, 'dblclick', L.DomEvent.stopPropagation)
-			.on(container, 'contextmenu', L.DomEvent.stopPropagation);
+			.on(container, 'click', L.DomEvent.stop)
+			.on(container, 'mousedown', L.DomEvent.stop)
+			.on(container, 'dblclick', L.DomEvent.stop)
+			.on(container, 'contextmenu', L.DomEvent.stop);
 	},
 
 	addHooks: function () {
@@ -41,7 +41,9 @@ L.Map.ContextMenu = L.Handler.extend({
 		this._map.on({
 			contextmenu: this._show,
 			mouseout: this._hide,
-			mousedown: this._hide
+			mousedown: this._hide,
+			movestart: this._hide,
+			zoomstart: this._hide
 		}, this);
 	},
 
@@ -51,7 +53,9 @@ L.Map.ContextMenu = L.Handler.extend({
 		this._map.off({
 			contextmenu: this._show,
 			mouseout: this._hide,
-			mousedown: this._hide
+			mousedown: this._hide,
+			movestart: this._hide,
+			zoomstart: this._hide
 		}, this);
 	},
 
@@ -77,6 +81,8 @@ L.Map.ContextMenu = L.Handler.extend({
 		
 		this._items.push(item);
 
+		this._sizeChanged = true;
+
 		this._map.fire('contextmenu.additem', {
 			contextmenu: this,
 			el: item.el,
@@ -95,6 +101,8 @@ L.Map.ContextMenu = L.Handler.extend({
 
 		if (item) {
 			this._removeItem(L.Util.stamp(item));
+
+			this._sizeChanged = true;
 
 			this._map.fire('contextmenu.removeitem', {
 				contextmenu: this,
@@ -295,7 +303,6 @@ L.Map.ContextMenu = L.Handler.extend({
 	_hide: function () {
 		if (this._visible) {
 			this._container.style.display = 'none';
-
 			this._visible = false;
 
 			this._map.fire('contextmenu.hide', {contextmenu: this});
@@ -327,17 +334,23 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_getElementSize: function (el) {		
-		var size = {};
+		var size = this._size;
 
-		el.style.left = '-999999px';
-		el.style.right = 'auto';
-		el.style.display = 'block';
+		if (!size || this._sizeChanged) {
+			size = {};
 
-		size.x = el.offsetWidth;
-		size.y = el.offsetHeight;
-
-		el.style.left = 'auto';
-		el.style.display = 'none';
+			el.style.left = '-999999px';
+			el.style.right = 'auto';
+			el.style.display = 'block';
+			
+			size.x = el.offsetWidth;
+			size.y = el.offsetHeight;
+			
+			el.style.left = 'auto';
+			el.style.display = 'none';
+			
+			this._sizeChanged = false;
+		}
 
 		return size;
 	},
@@ -401,3 +414,5 @@ L.Marker.addInitHook(function () {
 		this._initContextMenu();
 	}
 });
+
+L.Marker.include(L.Mixin.ContextMenu);

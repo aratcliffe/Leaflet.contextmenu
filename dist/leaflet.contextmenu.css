@@ -6,6 +6,9 @@
     padding: 4px 0;
     background-color: #fff;
     cursor: default;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 }
 
 .leaflet-contextmenu a.leaflet-contextmenu-item {
