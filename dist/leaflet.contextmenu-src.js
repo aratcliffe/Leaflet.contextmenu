@@ -369,11 +369,9 @@ L.Map.addInitHook('addHandler', 'contextmenu', L.Map.ContextMenu);
 L.Mixin.ContextMenu = {
 
 	_initContextMenu: function () {
-		if (this.options.contextmenuItems.length) {
-			this._items = [];
-
-			this.on('contextmenu', this._showContextMenu, this);
-		}
+		this._items = [];
+		
+		this.on('contextmenu', this._showContextMenu, this);
 	},
 
 	_showContextMenu: function (e) {
