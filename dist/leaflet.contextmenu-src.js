@@ -414,3 +414,16 @@ L.Marker.addInitHook(function () {
 });
 
 L.Marker.include(L.Mixin.ContextMenu);
+
+L.Path.mergeOptions({
+	contextmenu: false,
+	contextmenuItems: []
+});
+
+L.Path.addInitHook(function () {
+	if (this.options.contextmenu) {
+		this._initContextMenu();
+	}
+});
+
+L.Path.include(L.Mixin.ContextMenu);
