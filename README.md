@@ -62,6 +62,7 @@ L.marker(ll, {
 | context | Object | The map | The scope the callback will be executed in.
 | disabled | Bool | `false` | If `true` the menu item will initially be in a disabled state and will not respond to click events.
 | separator | Bool | `undefined` | If `true` a separator will be created instead of a menu item.
+| hideOnSelect | Bool | `true` | If `true` the context menu will be automatically hidden when a menu item is selected
 
 ###Methods
 

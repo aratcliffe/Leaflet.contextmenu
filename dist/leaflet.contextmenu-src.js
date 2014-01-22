@@ -1,7 +1,3 @@
-/*
-	Leaflet.contextmenu, a context menu for Leaflet.
-	(c) 2013, Adam Ratcliffe, GeoSmart Maps Limited
-*/
 L.Map.mergeOptions({
 	contextmenuItems: []
 });
@@ -167,7 +163,7 @@ L.Map.ContextMenu = L.Handler.extend({
 		var itemCls = L.Map.ContextMenu.BASE_CLS + '-item', 
 		    cls = options.disabled ? (itemCls + ' ' + itemCls + '-disabled') : itemCls,
 		    el = this._insertElementAt('a', cls, container, index),
-		    callback = this._createEventHandler(el, options.callback, options.context),
+		    callback = this._createEventHandler(el, options.callback, options.context, options.hideOnSelect),
 		    html = '';
 		
 		if (options.icon) {
@@ -232,18 +228,24 @@ L.Map.ContextMenu = L.Handler.extend({
 		};
 	},
 
-	_createEventHandler: function (el, func, context) {
+	_createEventHandler: function (el, func, context, hideOnSelect) {
 		var me = this,
 		    map = this._map,
-		    disabledCls = L.Map.ContextMenu.BASE_CLS + '-item-disabled';
+		    disabledCls = L.Map.ContextMenu.BASE_CLS + '-item-disabled',
+		    hideOnSelect = (hideOnSelect !== undefined) ? hideOnSelect : true;
 		
 		return function (e) {
 			if (L.DomUtil.hasClass(el, disabledCls)) {
 				return;
 			}
+			
+			if (hideOnSelect) {
+				me._hide();			
+			}
 
-			me._hide();			
-			func.call(context || map, me._showLocation);			
+			if (func) {
+				func.call(context || map, me._showLocation);			
+			}
 
 			me._map.fire('contextmenu:select', {
 				contextmenu: me,
