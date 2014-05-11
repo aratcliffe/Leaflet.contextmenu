@@ -23,7 +23,7 @@ L.Map.ContextMenu = L.Handler.extend({
 		}
 		
 		this._createItems();
-		
+
 		L.DomEvent
 			.on(container, 'click', L.DomEvent.stop)
 			.on(container, 'mousedown', L.DomEvent.stop)
@@ -32,7 +32,9 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		L.DomEvent.on(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent
+		    .on(document, (L.Browser.touch ? 'touchstart' : 'mousedown'), this._onMouseDown, this)
+			.on(document, 'keydown', this._onKeyDown, this);
 
 		this._map.on({
 			contextmenu: this._show,
@@ -176,10 +178,9 @@ L.Map.ContextMenu = L.Handler.extend({
 		el.href = '#';
 
 		L.DomEvent
-			.on(el, 'click', L.DomEvent.stopPropagation)
+			.on(el, 'mouseover', this._onItemMouseOver, this)
+			.on(el, 'mouseout', this._onItemMouseOut, this)
 			.on(el, 'mousedown', L.DomEvent.stopPropagation)
-			.on(el, 'dblclick', L.DomEvent.stopPropagation)
-			.on(el, 'click', L.DomEvent.preventDefault)
 			.on(el, 'click', callback);
 
 		return {
@@ -203,10 +204,9 @@ L.Map.ContextMenu = L.Handler.extend({
 
 				if (callback) {
 					L.DomEvent
-						.off(el, 'click', L.DomEvent.stopPropagation)
+						.off(el, 'mouseover', this._onItemMouseOver, this)
+						.off(el, 'mouseover', this._onItemMouseOut, this)
 						.off(el, 'mousedown', L.DomEvent.stopPropagation)
-						.off(el, 'dblclick', L.DomEvent.stopPropagation)
-						.off(el, 'click', L.DomEvent.preventDefault)
 						.off(el, 'click', item.callback);				
 				}
 				
@@ -278,35 +278,40 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_showAtPoint: function (pt, data) {
-		if (!this._visible && this._items.length) {
-			var map = this._map,
-			    layerPoint = map.containerPointToLayerPoint(pt),
-			    latlng = map.layerPointToLatLng(layerPoint),
-			    event = {contextmenu: this};
+		if (this._items.length) {
+			if (!this._visible) {
 
-			if (data) {
-				event = L.extend(data, event);
+				this._visible = true;				
+				
+				var map = this._map,
+				layerPoint = map.containerPointToLayerPoint(pt),
+				latlng = map.layerPointToLatLng(layerPoint),
+				event = {contextmenu: this};
+
+				if (data) {
+					event = L.extend(data, event);
+				}
+
+				this._showLocation = {
+					latlng: latlng,
+					layerPoint: layerPoint,
+					containerPoint: pt,
+				};
+
+				this._setPosition(pt);			
+				this._container.style.display = 'block';			
+
+				this._map.fire('contextmenu.show', event);
+			} else {
+				this._setPosition(pt);			
 			}
-
-			this._showLocation = {
-				latlng: latlng,
-				layerPoint: layerPoint,
-				containerPoint: pt,
-			};
-
-			this._setPosition(pt);
-			this._container.style.display = 'block';			
-			this._visible = true;				
-
-			this._map.fire('contextmenu.show', event);
-		}		
+		}
 	},
 
 	_hide: function () {
 		if (this._visible) {
-			this._container.style.display = 'none';
 			this._visible = false;
-
+			this._container.style.display = 'none';
 			this._map.fire('contextmenu.hide', {contextmenu: this});
 		}
 	},
@@ -336,7 +341,8 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_getElementSize: function (el) {		
-		var size = this._size;
+		var size = this._size,
+		    initialDisplay = el.style.display;
 
 		if (!size || this._sizeChanged) {
 			size = {};
@@ -349,7 +355,7 @@ L.Map.ContextMenu = L.Handler.extend({
 			size.y = el.offsetHeight;
 			
 			el.style.left = 'auto';
-			el.style.display = 'none';
+			el.style.display = initialDisplay;
 			
 			this._sizeChanged = false;
 		}
@@ -357,13 +363,27 @@ L.Map.ContextMenu = L.Handler.extend({
 		return size;
 	},
 
+	_onMouseDown: function (e) {
+		console.log('_onMouseDown');
+		
+		this._hide();
+	},
+
 	_onKeyDown: function (e) {
 		var key = e.keyCode;
 
 		// If ESC pressed and context menu is visible hide it 
-		if (key === 27  && this._visible) {
+		if (key === 27) {
 			this._hide();
 		}
+	},
+
+	_onItemMouseOver: function (e) {
+		L.DomUtil.addClass(e.target, 'over');
+	},
+
+	_onItemMouseOut: function (e) {
+		L.DomUtil.removeClass(e.target, 'over');
 	}
 });
 
