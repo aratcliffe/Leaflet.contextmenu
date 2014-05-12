@@ -319,7 +319,13 @@ L.Map.ContextMenu = L.Handler.extend({
 	_setPosition: function (pt) {
 		var mapSize = this._map.getSize(),
 		    container = this._container,
-		    containerSize = this._getElementSize(container);
+		    containerSize = this._getElementSize(container),
+		    anchor;
+
+		if (this._map.options.contextmenuAnchor) {
+			anchor = L.point(this._map.options.contextmenuAnchor);
+			pt = pt.add(anchor);
+		}
 
 		container._leaflet_pos = pt;
 

@@ -49,6 +49,7 @@ L.marker(ll, {
 | --- | --- | --- | ---
 | contextmenu | Bool | `false` | Enables the context menu.
 | contextmenuWidth | Number | `undefined` | If defined sets the context menu width, if `undefined` the menu will be sized by the maximum width of its menu items.
+| contextmenuAnchor | L.Point/Array | `undefined` | An offset applied to the click point to control the context menu position.
 | contextmenuItems | Array | `[]` | Specification for the context menu items. See following options for individual menu items. A separator may also be added with a dash character `'-'`.
 
 ####Menu Item Options
