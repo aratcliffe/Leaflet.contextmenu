@@ -335,17 +335,17 @@ L.Map.ContextMenu = L.Handler.extend({
 
 		if (pt.x + containerSize.x > mapSize.x) {
 			container.style.left = 'auto';
-			container.style.right = (mapSize.x - pt.x) + 'px';
+			container.style.right = Math.max(mapSize.x - pt.x, 0) + 'px';
 		} else {
-			container.style.left = pt.x + 'px';
+			container.style.left = Math.max(pt.x, 0) + 'px';
 			container.style.right = 'auto';
 		}
 		
 		if (pt.y + containerSize.y > mapSize.y) {
 			container.style.top = 'auto';
-			container.style.bottom = (mapSize.y - pt.y) + 'px';
+			container.style.bottom = Math.max(mapSize.y - pt.y, 0) + 'px';
 		} else {
-			container.style.top = pt.y + 'px';
+			container.style.top = Math.max(pt.y, 0) + 'px';
 			container.style.bottom = 'auto';
 		}
 	},
