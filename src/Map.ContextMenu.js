@@ -279,32 +279,31 @@ L.Map.ContextMenu = L.Handler.extend({
 
 	_showAtPoint: function (pt, data) {
 		if (this._items.length) {
+			var map = this._map,
+			layerPoint = map.containerPointToLayerPoint(pt),
+			latlng = map.layerPointToLatLng(layerPoint),
+			event = {contextmenu: this};
+			
+			if (data) {
+				event = L.extend(data, event);
+			}
+			
+			this._showLocation = {
+				latlng: latlng,
+				layerPoint: layerPoint,
+				containerPoint: pt,
+			};
+
+			this._setPosition(pt);			
+
 			if (!this._visible) {
-
-				this._visible = true;				
-				
-				var map = this._map,
-				layerPoint = map.containerPointToLayerPoint(pt),
-				latlng = map.layerPointToLatLng(layerPoint),
-				event = {contextmenu: this};
-
-				if (data) {
-					event = L.extend(data, event);
-				}
-
-				this._showLocation = {
-					latlng: latlng,
-					layerPoint: layerPoint,
-					containerPoint: pt,
-				};
-
-				this._setPosition(pt);			
-				this._container.style.display = 'block';			
-
-				this._map.fire('contextmenu.show', event);
+				this._container.style.display = 'block';							
+				this._visible = true;							
 			} else {
 				this._setPosition(pt);			
 			}
+
+			this._map.fire('contextmenu.show', event);
 		}
 	},
 
