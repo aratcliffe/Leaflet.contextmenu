@@ -373,8 +373,6 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_onMouseDown: function (e) {
-		console.log('_onMouseDown');
-		
 		this._hide();
 	},
 
