@@ -2,7 +2,7 @@ L.Mixin.ContextMenu = {
 
 	_initContextMenu: function () {
 		this._items = [];
-		
+	
 		this.on('contextmenu', this._showContextMenu, this);
 	},
 
@@ -34,28 +34,29 @@ L.Mixin.ContextMenu = {
 	}	
 };
 
-L.Marker.mergeOptions({
-	contextmenu: false,
-	contextmenuItems: []
-});
+var classes = [L.Marker, L.Path, L.GeoJSON],
+    defaultOptions = {
+		contextmenu: false,
+		contextmenuItems: []
+	},
+    cls, i, l;
 
-L.Marker.addInitHook(function () {
-	if (this.options.contextmenu) {
-		this._initContextMenu();
+for (i = 0, l = classes.length; i < l; i++) {
+	cls = classes[i];
+
+	// L.Class should probably provide an empty options hash, as it does not test
+	// for it here and add if needed
+	if (!cls.prototype.options) {
+		cls.prototype.options = defaultOptions;
+	} else {
+		cls.mergeOptions(defaultOptions);
 	}
-});
 
-L.Marker.include(L.Mixin.ContextMenu);
+	cls.addInitHook(function () {
+		if (this.options.contextmenu) {
+			this._initContextMenu();
+		}
+	});
 
-L.Path.mergeOptions({
-	contextmenu: false,
-	contextmenuItems: []
-});
-
-L.Path.addInitHook(function () {
-	if (this.options.contextmenu) {
-		this._initContextMenu();
-	}
-});
-
-L.Path.include(L.Mixin.ContextMenu);
+	cls.include(L.Mixin.ContextMenu);
+}
