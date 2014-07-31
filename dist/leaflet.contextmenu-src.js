@@ -1,6 +1,6 @@
 /*
-	Leaflet.contextmenu, a context menu for Leaflet.
-	(c) 2014, Adam Ratcliffe, GeoSmart Maps Limited
+	Leaflet.contextmenu, A context menu for Leaflet.
+	(c) 2014, Adam Ratcliffe, TomTom International BV
 */
 L.Map.mergeOptions({
 	contextmenuItems: []
@@ -120,6 +120,24 @@ L.Map.ContextMenu = L.Handler.extend({
 			item = this._container.children[0];
 			this._removeItem(L.Util.stamp(item));
 		}
+	},
+
+	hideAllItems: function () {
+		var item, i, l;
+
+		for (i = 0, l = this._items.length; i < l; i++) {
+			item = this._items[i];
+			item.el.style.display = 'none';
+		}
+	},
+
+	showAllItems: function () {
+		var item, i, l;
+
+		for (i = 0, l = this._items.length; i < l; i++) {
+			item = this._items[i];
+			item.el.style.display = '';
+		}		
 	},
 
 	setDisabled: function (item, disabled) {
@@ -410,6 +428,10 @@ L.Mixin.ContextMenu = {
 		if (this._map.contextmenu) {
 			pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
+			if (!this.options.contextmenuInheritItems) {
+				this._map.contextmenu.hideAllItems();
+			}
+
 			for (i = 0, l = this.options.contextmenuItems.length; i < l; i++) {
 				itemOptions = this.options.contextmenuItems[i];
 				this._items.push(this._map.contextmenu.insertItem(itemOptions, itemOptions.index));
@@ -428,13 +450,18 @@ L.Mixin.ContextMenu = {
 			this._map.contextmenu.removeItem(this._items[i]);
 		}
 		this._items.length = 0;		
+
+		if (!this.options.contextmenuInheritItems) {
+			this._map.contextmenu.showAllItems();
+		}
 	}	
 };
 
 var classes = [L.Marker, L.Path, L.GeoJSON],
     defaultOptions = {
 		contextmenu: false,
-		contextmenuItems: []
+		contextmenuItems: [],
+	    contextmenuInheritItems: true
 	},
     cls, i, l;
 

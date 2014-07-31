@@ -27,7 +27,7 @@ var map = L.map('map', {
 });    
 ````
 
-The context menu mixin allows markers to extend the map context menu with their own menu items. In addition to the menu item options available for the map context menu marker's also accept an `index` option that specifies where the menu item should be inserted relative to the existing map menu items.
+The context menu mixin allows markers and vector features to extend the map context menu with their own menu items. In addition to the menu item options available for the map context menu marker's also accept an `index` option that specifies where the menu item should be inserted relative to the existing map menu items.
 
 ````javascript
 L.marker(ll, {
@@ -64,6 +64,15 @@ L.marker(ll, {
 | disabled | Bool | `false` | If `true` the menu item will initially be in a disabled state and will not respond to click events.
 | separator | Bool | `undefined` | If `true` a separator will be created instead of a menu item.
 | hideOnSelect | Bool | `true` | If `true` the context menu will be automatically hidden when a menu item is selected
+
+####Mixin Options
+
+| Option | Type | Default | Description
+| --- | --- | --- | ---
+| contextmenu | Bool | `false` | Enables the context menu.
+| contextmenuItems | Array | `[]` | Specification for the context menu items.
+| contextmenuInheritItems | Bool | `true` | If `true` (the default) the feature menu items are displayed in addition to the map's context menu items.
+
 
 ###Methods
 

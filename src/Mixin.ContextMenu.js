@@ -13,6 +13,10 @@ L.Mixin.ContextMenu = {
 		if (this._map.contextmenu) {
 			pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
+			if (!this.options.contextmenuInheritItems) {
+				this._map.contextmenu.hideAllItems();
+			}
+
 			for (i = 0, l = this.options.contextmenuItems.length; i < l; i++) {
 				itemOptions = this.options.contextmenuItems[i];
 				this._items.push(this._map.contextmenu.insertItem(itemOptions, itemOptions.index));
@@ -31,13 +35,18 @@ L.Mixin.ContextMenu = {
 			this._map.contextmenu.removeItem(this._items[i]);
 		}
 		this._items.length = 0;		
+
+		if (!this.options.contextmenuInheritItems) {
+			this._map.contextmenu.showAllItems();
+		}
 	}	
 };
 
 var classes = [L.Marker, L.Path, L.GeoJSON],
     defaultOptions = {
 		contextmenu: false,
-		contextmenuItems: []
+		contextmenuItems: [],
+	    contextmenuInheritItems: true
 	},
     cls, i, l;
 

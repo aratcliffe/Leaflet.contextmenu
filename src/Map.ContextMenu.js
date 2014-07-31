@@ -118,6 +118,24 @@ L.Map.ContextMenu = L.Handler.extend({
 		}
 	},
 
+	hideAllItems: function () {
+		var item, i, l;
+
+		for (i = 0, l = this._items.length; i < l; i++) {
+			item = this._items[i];
+			item.el.style.display = 'none';
+		}
+	},
+
+	showAllItems: function () {
+		var item, i, l;
+
+		for (i = 0, l = this._items.length; i < l; i++) {
+			item = this._items[i];
+			item.el.style.display = '';
+		}		
+	},
+
 	setDisabled: function (item, disabled) {
 		var container = this._container,
 		itemCls = L.Map.ContextMenu.BASE_CLS + '-item';
