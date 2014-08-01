@@ -129,6 +129,7 @@ Fired when the context menu is shown.
 | Property | Type | Description
 | --- | --- | ---
 | contextmenu | Map.ContextMenu | The context menu.
+| relatedTarget | L.Marker/L.Path/undefined | If the context menu was opened for a map feature this property will contain a reference to that feature.
 
 ####contextmenu.hide
 
