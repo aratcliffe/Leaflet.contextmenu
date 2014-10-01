@@ -1,5 +1,12 @@
 L.Mixin.ContextMenu = {
 
+	bindContextMenu: function (options) {
+		L.setOptions(this, options);
+		this._initContextMenu();
+
+		return this;
+	},
+
 	_initContextMenu: function () {
 		this._items = [];
 	
