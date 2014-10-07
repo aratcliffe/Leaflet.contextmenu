@@ -7,6 +7,12 @@ L.Mixin.ContextMenu = {
 		return this;
 	},
 
+	unbindContextMenu: function (){
+		this.off('contextmenu', this._showContextMenu, this);
+
+		return this;
+	},
+
 	_initContextMenu: function () {
 		this._items = [];
 	
