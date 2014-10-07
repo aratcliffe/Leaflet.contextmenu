@@ -4,6 +4,8 @@ L.Map.mergeOptions({
 
 L.Map.ContextMenu = L.Handler.extend({
 
+	_touchstart: L.Browser.msPointer ? 'MSPointerDown' : L.Browser.pointer ? 'pointerdown' : 'touchstart',
+
 	statics: {
 		BASE_CLS: 'leaflet-contextmenu'
 	},
@@ -33,7 +35,7 @@ L.Map.ContextMenu = L.Handler.extend({
 
 	addHooks: function () {
 		L.DomEvent
-		    .on(document, (L.Browser.touch ? 'touchstart' : 'mousedown'), this._onMouseDown, this)
+		    .on(document, (L.Browser.touch ? this._touchstart : 'mousedown'), this._onMouseDown, this)
 			.on(document, 'keydown', this._onKeyDown, this);
 
 		this._map.on({
@@ -46,7 +48,9 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent
+			.off(document, (L.Browser.touch ? this._touchstart : 'mousedown'), this._onMouseDown, this)
+			.off(document, 'keydown', this._onKeyDown, this);
 
 		this._map.off({
 			contextmenu: this._show,
