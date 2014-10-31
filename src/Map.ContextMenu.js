@@ -404,11 +404,11 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_onItemMouseOver: function (e) {
-		L.DomUtil.addClass(e.target, 'over');
+		L.DomUtil.addClass(e.target || e.srcElement, 'over');
 	},
 
 	_onItemMouseOut: function (e) {
-		L.DomUtil.removeClass(e.target, 'over');
+		L.DomUtil.removeClass(e.target || e.srcElement, 'over');
 	}
 });
 
