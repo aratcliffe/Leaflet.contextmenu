@@ -1,12 +1,35 @@
 /*
-	Leaflet.contextmenu, A context menu for Leaflet.
-	(c) 2014, Adam Ratcliffe, TomTom International BV
+	Leaflet.contextmenu, a context menu for Leaflet.
+	(c) 2014, Adam Ratcliffe, GeoSmart Maps Limited
+       
+        @preserve
 */
+
+(function(factory) {
+	// Packaging/modules magic dance
+	var L;
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define(['leaflet'], factory);
+	} else if (typeof module !== 'undefined') {
+		// Node/CommonJS
+		L = require('leaflet');
+		module.exports = factory(L);
+	} else {
+		// Browser globals
+		if (typeof window.L === 'undefined') {
+			throw new Error('Leaflet must be loaded first');
+		}
+		factory(window.L);
+	}
+})(function(L) {
 L.Map.mergeOptions({
 	contextmenuItems: []
 });
 
 L.Map.ContextMenu = L.Handler.extend({
+
+	_touchstart: L.Browser.msPointer ? 'MSPointerDown' : L.Browser.pointer ? 'pointerdown' : 'touchstart',
 
 	statics: {
 		BASE_CLS: 'leaflet-contextmenu'
@@ -37,7 +60,7 @@ L.Map.ContextMenu = L.Handler.extend({
 
 	addHooks: function () {
 		L.DomEvent
-		    .on(document, (L.Browser.touch ? 'touchstart' : 'mousedown'), this._onMouseDown, this)
+		    .on(document, (L.Browser.touch ? this._touchstart : 'mousedown'), this._onMouseDown, this)
 			.on(document, 'keydown', this._onKeyDown, this);
 
 		this._map.on({
@@ -50,7 +73,9 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent
+			.off(document, (L.Browser.touch ? this._touchstart : 'mousedown'), this._onMouseDown, this)
+			.off(document, 'keydown', this._onKeyDown, this);
 
 		this._map.off({
 			contextmenu: this._show,
@@ -415,6 +440,19 @@ L.Map.ContextMenu = L.Handler.extend({
 L.Map.addInitHook('addHandler', 'contextmenu', L.Map.ContextMenu);
 L.Mixin.ContextMenu = {
 
+	bindContextMenu: function (options) {
+		L.setOptions(this, options);
+		this._initContextMenu();
+
+		return this;
+	},
+
+	unbindContextMenu: function (){
+		this.off('contextmenu', this._showContextMenu, this);
+
+		return this;
+	},
+
 	_initContextMenu: function () {
 		this._items = [];
 	
@@ -484,3 +522,5 @@ for (i = 0, l = classes.length; i < l; i++) {
 
 	cls.include(L.Mixin.ContextMenu);
 }
+	return L.Map.ContextMenu;
+	});
