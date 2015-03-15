@@ -118,6 +118,19 @@ isVisible()
 ````
 Returns `true` if the context menu is currently visible.
 
+###Mixin Methods
+The following methods are available on supported layer types when using the context menu mixin.
+
+````javascript
+bindContextMenu(contextMenuOptions)    
+````
+Binds a context menu to the feature the method is called on.
+
+````javascript
+unbindContextMenu()
+````
+Unbinds the context menu previously bound to the feature with the bindContextMenu() method.
+    
 ###Events
 
 The following events are triggered on the map:
