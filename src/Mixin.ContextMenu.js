@@ -55,7 +55,7 @@ L.Mixin.ContextMenu = {
 	}	
 };
 
-var classes = [L.Marker, L.Path, L.GeoJSON],
+var classes = [L.Marker, L.Path],
     defaultOptions = {
 		contextmenu: false,
 		contextmenuItems: [],

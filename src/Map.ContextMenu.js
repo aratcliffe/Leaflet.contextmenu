@@ -40,11 +40,12 @@ L.Map.ContextMenu = L.Handler.extend({
 
 		this._map.on({
 			contextmenu: this._show,
-			mouseout: this._hide,
 			mousedown: this._hide,
 			movestart: this._hide,
 			zoomstart: this._hide
 		}, this);
+
+        L.DomEvent.on(this._map.getContainer(), 'mouseleave', this._hide, this);
 	},
 
 	removeHooks: function () {
@@ -54,11 +55,12 @@ L.Map.ContextMenu = L.Handler.extend({
 
 		this._map.off({
 			contextmenu: this._show,
-			mouseout: this._hide,
 			mousedown: this._hide,
 			movestart: this._hide,
 			zoomstart: this._hide
 		}, this);
+
+        L.DomEvent.off(this._map.getContainer(), 'mouseleave', this._hide, this);
 	},
 
 	showAt: function (point, data) {
@@ -329,7 +331,7 @@ L.Map.ContextMenu = L.Handler.extend({
 		}
 	},
 
-	_hide: function () {
+	_hide: function () {        
 		if (this._visible) {
 			this._visible = false;
 			this._container.style.display = 'none';
