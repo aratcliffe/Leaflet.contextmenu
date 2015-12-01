@@ -24,6 +24,11 @@ L.Mixin.ContextMenu = {
 		    pt, i, l;
 
 		if (this._map.contextmenu) {
+
+            // Refreshing hooks
+            this._map.contextmenu.removeHooks();
+            this._map.contextmenu.addHooks();
+
 			pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
 			if (!this.options.contextmenuInheritItems) {
