@@ -315,7 +315,8 @@ L.Map.ContextMenu = L.Handler.extend({
 			this._showLocation = {
 				latlng: latlng,
 				layerPoint: layerPoint,
-				containerPoint: pt
+				containerPoint: pt,
+				relatedTarget: data.relatedTarget
 			};
 
 			this._setPosition(pt);			
