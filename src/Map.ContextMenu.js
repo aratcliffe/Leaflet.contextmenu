@@ -315,9 +315,12 @@ L.Map.ContextMenu = L.Handler.extend({
 			this._showLocation = {
 				latlng: latlng,
 				layerPoint: layerPoint,
-				containerPoint: pt,
-				relatedTarget: data.relatedTarget
+				containerPoint: pt
 			};
+
+			if(data && data.relatedTarget){
+				this._showLocation.relatedTarget = data.relatedTarget;
+			}
 
 			this._setPosition(pt);			
 
