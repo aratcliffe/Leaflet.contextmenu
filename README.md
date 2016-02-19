@@ -25,6 +25,23 @@ var map = L.map('map', {
 	    callback: zoomOut
 	}]
 });    
+
+
+function showCoordinates (e) {
+	alert(e.latlng);
+}
+
+function centerMap (e) {
+	map.panTo(e.latlng);
+}
+
+function zoomIn (e) {
+	map.zoomIn();
+}
+
+function zoomOut (e) {
+	map.zoomOut();
+}
 ````
 
 The context menu mixin allows markers and vector features to extend the map context menu with their own menu items. In addition to the menu item options available for the map context menu marker's also accept an `index` option that specifies where the menu item should be inserted relative to the existing map menu items.
