@@ -318,6 +318,10 @@ L.Map.ContextMenu = L.Handler.extend({
 				containerPoint: pt
 			};
 
+			if(data && data.relatedTarget){
+				this._showLocation.relatedTarget = data.relatedTarget;
+			}
+
 			this._setPosition(pt);			
 
 			if (!this._visible) {
