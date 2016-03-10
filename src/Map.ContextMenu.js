@@ -252,7 +252,7 @@ L.Map.ContextMenu = L.Handler.extend({
 		};
 	},
 
-	_createEventHandler: function (el, func, context, hideOnSelect) {
+	_createEventHandler: function (el, func, context, hideOnSelect, attr) {
 		var me = this,
 		    map = this._map,
 		    disabledCls = L.Map.ContextMenu.BASE_CLS + '-item-disabled',
