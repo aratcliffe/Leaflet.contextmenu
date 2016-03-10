@@ -28,6 +28,12 @@
     opacity: 0.5;
 }
 
+.leaflet-contextmenu a.leaflet-contextmenu-item:hover {
+    background-color: #84a0f4;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
 .leaflet-contextmenu a.leaflet-contextmenu-item.over {
     background-color: #f4f4f4;
     border-top: 1px solid #f0f0f0;
