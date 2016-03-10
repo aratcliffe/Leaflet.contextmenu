@@ -268,6 +268,7 @@ L.Map.ContextMenu = L.Handler.extend({
 			}
 
 			if (func) {
+        me._showLocation.attr = attr;
 				func.call(context || map, me._showLocation);			
 			}
 
