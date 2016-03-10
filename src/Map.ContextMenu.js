@@ -189,7 +189,7 @@ L.Map.ContextMenu = L.Handler.extend({
 		var itemCls = L.Map.ContextMenu.BASE_CLS + '-item', 
 		    cls = options.disabled ? (itemCls + ' ' + itemCls + '-disabled') : itemCls,
 		    el = this._insertElementAt('a', cls, container, index),
-		    callback = this._createEventHandler(el, options.callback, options.context, options.hideOnSelect),
+		    callback = this._createEventHandler(el, options.callback, options.context, options.hideOnSelect, options.attr),
 		    html = '';
 		
 		if (options.icon) {
