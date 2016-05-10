@@ -9,7 +9,8 @@
 	"scripts": {
 		"concat": "cat src/copyright.js src/Map.ContextMenu.js src/Mixin.ContextMenu.js src/end.js > dist/leaflet.contextmenu-src.js",
 		"compress": "uglifyjs dist/leaflet.contextmenu-src.js -m --comments -o dist/leaflet.contextmenu.js",
-		"build": "npm run concat && npm run compress"
+		"css-minify": "cleancss -o dist/leaflet.contextmenu.min.css dist/leaflet.contextmenu.css",
+		"build": "npm run concat && npm run compress && npm run css-minify"
 	},
 	"repository": {
 		"type": "git",
@@ -29,6 +30,7 @@
 	},
 	"homepage": "https://github.com/aratcliffe/Leaflet.contextmenu",
 	"devDependencies": {
-		"uglifyjs": "^2.3.6"
+		"uglifyjs": "^2.3.6",
+		"clean-css": "^3.4.12"
 	}
 }
