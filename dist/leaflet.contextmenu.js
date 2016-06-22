@@ -323,7 +323,7 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_show: function (e) {
-		this._showAtPoint(e.containerPoint);
+		this._showAtPoint(e.containerPoint, e);
 	},
 
 	_showAtPoint: function (pt, data) {
@@ -331,11 +331,7 @@ L.Map.ContextMenu = L.Handler.extend({
 			var map = this._map,
 			layerPoint = map.containerPointToLayerPoint(pt),
 			latlng = map.layerPointToLatLng(layerPoint),
-			event = {contextmenu: this};
-			
-			if (data) {
-				event = L.extend(data, event);
-			}
+			event = L.extend(data || {}, {contextmenu: this});
 			
 			this._showLocation = {
 				latlng: latlng,
@@ -467,9 +463,11 @@ L.Mixin.ContextMenu = {
 
 	_showContextMenu: function (e) {
 		var itemOptions,
-		    pt, i, l;
+		    data, pt, i, l;
 
 		if (this._map.contextmenu) {
+            data = L.extend({relatedTarget: this}, e)
+            
 			pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
 			if (!this.options.contextmenuInheritItems) {
@@ -483,7 +481,7 @@ L.Mixin.ContextMenu = {
 
 			this._map.once('contextmenu.hide', this._hideContextMenu, this);
 		
-			this._map.contextmenu.showAt(pt, {relatedTarget: this});
+			this._map.contextmenu.showAt(pt, data);
 		}
 	},
 

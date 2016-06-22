@@ -298,7 +298,7 @@ L.Map.ContextMenu = L.Handler.extend({
 	},
 
 	_show: function (e) {
-		this._showAtPoint(e.containerPoint);
+		this._showAtPoint(e.containerPoint, e);
 	},
 
 	_showAtPoint: function (pt, data) {
@@ -306,11 +306,7 @@ L.Map.ContextMenu = L.Handler.extend({
 			var map = this._map,
 			layerPoint = map.containerPointToLayerPoint(pt),
 			latlng = map.layerPointToLatLng(layerPoint),
-			event = {contextmenu: this};
-			
-			if (data) {
-				event = L.extend(data, event);
-			}
+			event = L.extend(data || {}, {contextmenu: this});
 			
 			this._showLocation = {
 				latlng: latlng,

@@ -154,7 +154,7 @@ The following events are triggered on the map:
 
 ####contextmenu.show
 
-Fired when the context menu is shown.
+Fired when the context menu is shown. If the context menu was shown in response to a map `contextmenu` event the event object will extend [MouseEvent](http://leafletjs.com/reference.html#mouse-event).
 
 | Property | Type | Description
 | --- | --- | ---

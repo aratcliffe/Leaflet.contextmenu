@@ -21,9 +21,11 @@ L.Mixin.ContextMenu = {
 
 	_showContextMenu: function (e) {
 		var itemOptions,
-		    pt, i, l;
+		    data, pt, i, l;
 
 		if (this._map.contextmenu) {
+            data = L.extend({relatedTarget: this}, e)
+            
 			pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
 			if (!this.options.contextmenuInheritItems) {
@@ -37,7 +39,7 @@ L.Mixin.ContextMenu = {
 
 			this._map.once('contextmenu.hide', this._hideContextMenu, this);
 		
-			this._map.contextmenu.showAt(pt, {relatedTarget: this});
+			this._map.contextmenu.showAt(pt, data);
 		}
 	},
 
