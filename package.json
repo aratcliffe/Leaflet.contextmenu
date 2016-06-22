@@ -2,13 +2,13 @@
 	"name": "leaflet-contextmenu",
 	"version": "1.0.0",
 	"description": "A context menu for Leaflet",
-	"main": "dist/leaflet.contextmenu-src.js",
+	"main": "dist/leaflet.contextmenu.js",
 	"directories": {
 		"example": "examples"
 	},
 	"scripts": {
-		"concat": "cat src/copyright.js src/Map.ContextMenu.js src/Mixin.ContextMenu.js src/end.js > dist/leaflet.contextmenu-src.js",
-		"compress": "uglifyjs dist/leaflet.contextmenu-src.js -m --comments -o dist/leaflet.contextmenu.js",
+		"concat": "cat src/copyright.js src/Map.ContextMenu.js src/Mixin.ContextMenu.js src/end.js > dist/leaflet.contextmenu.js",
+		"compress": "uglifyjs dist/leaflet.contextmenu.js -m --comments -o dist/leaflet.contextmenu.min.js; uglifycss dist/leaflet.contextmenu.css > dist/leaflet.contextmenu.min.css",
 		"build": "npm run concat && npm run compress"
 	},
 	"repository": {
