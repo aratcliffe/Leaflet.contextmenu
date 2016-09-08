@@ -13,6 +13,29 @@ L.Mixin.ContextMenu = {
 		return this;
 	},
 
+	addContextMenuItem: function (item) {
+			this.options.contextmenuItems.push(item);
+	},
+
+	removeContextMenuItemWithIndex: function (index) {
+		  var items = [];
+			for (var i = 0; i < this.options.contextmenuItems.length; i++) {
+					if(this.options.contextmenuItems[i].index == index){
+							items.push(i);
+					}
+			}
+			var elem = items.pop();
+			while (elem !== undefined) {
+				  this.options.contextmenuItems.splice(elem,1);
+					elem = items.pop();
+		  }
+	},
+
+	replaceConextMenuItem: function (item) {
+		  this.removeContextMenuItemWithIndex(item.index);
+		  this.addContextMenuItem(item);
+	},
+
 	_initContextMenu: function () {
 		this._items = [];
 	
