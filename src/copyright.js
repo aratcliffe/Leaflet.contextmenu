@@ -1,7 +1,7 @@
 /*
 	Leaflet.contextmenu, a context menu for Leaflet.
 	(c) 2015, Adam Ratcliffe, GeoSmart Maps Limited
-       
+
         @preserve
 */
 
@@ -11,7 +11,7 @@
 	if (typeof define === 'function' && define.amd) {
 		// AMD
 		define(['leaflet'], factory);
-	} else if (typeof module !== 'undefined') {
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
 		// Node/CommonJS
 		L = require('leaflet');
 		module.exports = factory(L);
