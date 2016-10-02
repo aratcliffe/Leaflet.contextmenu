@@ -215,6 +215,10 @@ L.Map.ContextMenu = L.Handler.extend({
 			.on(el, 'mousedown', L.DomEvent.stopPropagation)
 			.on(el, 'click', callback);
 
+        if (L.Browser.touch) {
+            L.DomEvent.on(el, this._touchstart, L.DomEvent.stopPropagation);
+        }
+
 		return {
 			id: L.Util.stamp(el),
 			el: el,
@@ -240,6 +244,10 @@ L.Map.ContextMenu = L.Handler.extend({
 						.off(el, 'mouseover', this._onItemMouseOut, this)
 						.off(el, 'mousedown', L.DomEvent.stopPropagation)
 						.off(el, 'click', callback);
+
+                    if (L.Browser.touch) {
+                        L.DomEvent.off(el, this._touchstart, L.DomEvent.stopPropagation);
+                    }
 				}
 				
 				this._container.removeChild(el);
