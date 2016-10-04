@@ -20,6 +20,6 @@
     "README.md"
   ],
   "dependencies": {
-      "leaflet": "0.7.x"
+      "leaflet": "1.x"
   }
 }
