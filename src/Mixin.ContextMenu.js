@@ -31,7 +31,7 @@ L.Mixin.ContextMenu = {
 		  }
 	},
 
-	replaceConextMenuItem: function (item) {
+	replaceContextMenuItem: function (item) {
 		  this.removeContextMenuItemWithIndex(item.index);
 		  this.addContextMenuItem(item);
 	},
