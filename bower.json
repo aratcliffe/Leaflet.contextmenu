@@ -1,6 +1,5 @@
 {
   "name": "leaflet.contextmenu",
-  "version": "1.0.0",
   "homepage": "https://github.com/aratcliffe/Leaflet.contextmenu",
   "description": "A context menu for Leaflet",
   "main": "dist/leaflet.contextmenu.js",
