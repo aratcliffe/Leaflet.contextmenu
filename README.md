@@ -1,5 +1,7 @@
 #Leaflet.contextmenu
 ====================
+[![CDNJS](https://img.shields.io/cdnjs/v/leaflet-contextmenu.svg)](https://cdnjs.com/libraries/leaflet-contextmenu)
+
 A context menu for Leaflet. See the [demo](http://aratcliffe.github.io/Leaflet.contextmenu/examples/index.html).
 
 Now supporting Leaflet 1.0
