@@ -30,7 +30,7 @@ var map = L.map('map', {
 	    icon: 'images/zoom-out.png',
 	    callback: zoomOut
 	}]
-});    
+});
 
 
 function showCoordinates (e) {
@@ -145,7 +145,7 @@ Returns `true` if the context menu is currently visible.
 The following methods are available on supported layer types when using the context menu mixin.
 
 ````javascript
-bindContextMenu(contextMenuOptions)    
+bindContextMenu(contextMenuOptions)
 ````
 Binds a context menu to the feature the method is called on.
 
@@ -153,7 +153,7 @@ Binds a context menu to the feature the method is called on.
 unbindContextMenu()
 ````
 Unbinds the context menu previously bound to the feature with the bindContextMenu() method.
-    
+
 ###Events
 
 The following events are triggered on the map:
@@ -221,6 +221,14 @@ Fired when a menu item is disabled.
 | contextmenu | Map.ContextMenu | The context menu.
 | el | HTMLElement | The context menu item element.
 
+##Development
+
+Edit files in `src/`. To build the files in `dist/`, run:
+
+````shell
+npm install
+npm run build
+````
+
 ##License
 This software is released under the [MIT licence](http://www.opensource.org/licenses/mit-license.php). Icons used in the example are from [http://glyphicons.com](http://glyphicons.com).
-
