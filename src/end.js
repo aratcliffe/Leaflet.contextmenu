@@ -1,2 +1,2 @@
-	return L.Map.ContextMenu;
-	});
+return L.Map.ContextMenu;
+});
