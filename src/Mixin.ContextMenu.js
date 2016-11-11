@@ -1,5 +1,4 @@
 L.Mixin.ContextMenu = {
-
 	bindContextMenu: function (options) {
 		L.setOptions(this, options);
 		this._initContextMenu();
@@ -18,37 +17,37 @@ L.Mixin.ContextMenu = {
 	},
 
 	removeContextMenuItemWithIndex: function (index) {
-		  var items = [];
-			for (var i = 0; i < this.options.contextmenuItems.length; i++) {
-					if(this.options.contextmenuItems[i].index == index){
-							items.push(i);
-					}
+		var items = [];
+		for (var i = 0; i < this.options.contextmenuItems.length; i++) {
+			if (this.options.contextmenuItems[i].index == index){
+				items.push(i);
 			}
-			var elem = items.pop();
-			while (elem !== undefined) {
-				  this.options.contextmenuItems.splice(elem,1);
-					elem = items.pop();
-		  }
+		}
+		var elem = items.pop();
+		while (elem !== undefined) {
+			this.options.contextmenuItems.splice(elem,1);
+			elem = items.pop();
+		}
 	},
 
 	replaceContextMenuItem: function (item) {
-		  this.removeContextMenuItemWithIndex(item.index);
-		  this.addContextMenuItem(item);
+		this.removeContextMenuItemWithIndex(item.index);
+		this.addContextMenuItem(item);
 	},
 
 	_initContextMenu: function () {
 		this._items = [];
-	
+
 		this.on('contextmenu', this._showContextMenu, this);
 	},
 
 	_showContextMenu: function (e) {
 		var itemOptions,
-		    data, pt, i, l;
+			data, pt, i, l;
 
 		if (this._map.contextmenu) {
-            data = L.extend({relatedTarget: this}, e)
-            
+			data = L.extend({relatedTarget: this}, e);
+
 			pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
 			if (!this.options.contextmenuInheritItems) {
@@ -61,7 +60,7 @@ L.Mixin.ContextMenu = {
 			}
 
 			this._map.once('contextmenu.hide', this._hideContextMenu, this);
-		
+
 			this._map.contextmenu.showAt(pt, data);
 		}
 	},
@@ -72,21 +71,21 @@ L.Mixin.ContextMenu = {
 		for (i = 0, l = this._items.length; i < l; i++) {
 			this._map.contextmenu.removeItem(this._items[i]);
 		}
-		this._items.length = 0;		
+		this._items.length = 0;
 
 		if (!this.options.contextmenuInheritItems) {
 			this._map.contextmenu.showAllItems();
 		}
-	}	
+	}
 };
 
 var classes = [L.Marker, L.Path],
-    defaultOptions = {
+	defaultOptions = {
 		contextmenu: false,
 		contextmenuItems: [],
-	    contextmenuInheritItems: true
+		contextmenuInheritItems: true
 	},
-    cls, i, l;
+	cls, i, l;
 
 for (i = 0, l = classes.length; i < l; i++) {
 	cls = classes[i];

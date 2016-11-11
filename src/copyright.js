@@ -2,7 +2,7 @@
 	Leaflet.contextmenu, a context menu for Leaflet.
 	(c) 2015, Adam Ratcliffe, GeoSmart Maps Limited
 
-        @preserve
+	@preserve
 */
 
 (function(factory) {
