@@ -119,16 +119,22 @@ L.Map.ContextMenu = L.Handler.extend({
                 contextmenu: this,
                 el: item
             });
+
+            return item;
         }
+
+        return null;
     },
 
     removeAllItems: function () {
-        var item;
+        var items = this._container.children,
+            item;
 
-        while (this._container.children.length) {
-            item = this._container.children[0];
+        while (items.length) {
+            item = items[0];
             this._removeItem(L.Util.stamp(item));
         }
+        return items;
     },
 
     hideAllItems: function () {
@@ -297,7 +303,7 @@ L.Map.ContextMenu = L.Handler.extend({
                 func.call(context || map, me._showLocation);
             }
 
-            me._map.fire('contextmenu:select', {
+            me._map.fire('contextmenu.select', {
                 contextmenu: me,
                 el: el
             });
