@@ -1,5 +1,4 @@
 # Leaflet.contextmenu
-====================
 [![CDNJS](https://img.shields.io/cdnjs/v/leaflet-contextmenu.svg)](https://cdnjs.com/libraries/leaflet-contextmenu)
 [![npm](https://img.shields.io/npm/v/leaflet-contextmenu.svg)](https://www.npmjs.com/package/leaflet-contextmenu)
 [![Bower](https://img.shields.io/bower/v/leaflet.contextmenu.svg)](https://libraries.io/bower/Leaflet.contextmenu)
@@ -155,6 +154,41 @@ Binds a context menu to the feature the method is called on.
 unbindContextMenu()
 ````
 Unbinds the context menu previously bound to the feature with the bindContextMenu() method.
+
+### GeoJSON Data
+
+To use the context menu with GeoJSON data it's necessary to use one of the GeoJSON layer's [pointToLayer](http://leafletjs.com/reference-1.0.3.html#geojson-pointtolayer) or [onEachFeature](http://leafletjs.com/reference-1.0.3.html#geojson-oneachfeature) methods.
+
+#### Point Data
+
+````javascript
+var jsonLayer = L.geoJson(jsonData, {
+	pointToLayer: function (data, latLng) {
+	    var marker = new L.Marker(latLng, {
+	        contextmenu: true,
+	        contextmenuItems: [{
+	            text: 'Marker item'
+	        }]
+        });
+	    return marker;
+	}
+ }).addTo(map);
+ ````
+
+#### Other Types
+
+````javascript
+var jsonLayer = L.geoJson(jsonData, {
+	onEachFeature: function (feature, layer) {
+        layer.bindContextMenu({
+            contextmenu: true,
+	        contextmenuItems: [{
+	            text: 'Marker item'
+	        }]
+        });
+	}
+ }).addTo(map);
+````
 
 ### Events
 
