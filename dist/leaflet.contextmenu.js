@@ -29,14 +29,14 @@ L.Map.mergeOptions({
 
 L.Map.ContextMenu = L.Handler.extend({
     _touchstart: L.Browser.msPointer ? 'MSPointerDown' : L.Browser.pointer ? 'pointerdown' : 'touchstart',
-    
+
     statics: {
         BASE_CLS: 'leaflet-contextmenu'
     },
-    
+
     initialize: function (map) {
         L.Handler.prototype.initialize.call(this, map);
-        
+
         this._items = [];
         this._visible = false;
 
@@ -61,7 +61,7 @@ L.Map.ContextMenu = L.Handler.extend({
         var container = this._map.getContainer();
 
         L.DomEvent
-            .on(container, 'mouseleave', this._hide, this)
+            //            .on(container, 'mouseleave', this._hide, this)
             .on(document, 'keydown', this._onKeyDown, this);
 
         if (L.Browser.touch) {
@@ -110,10 +110,16 @@ L.Map.ContextMenu = L.Handler.extend({
         return this.insertItem(options);
     },
 
-    insertItem: function (options, index) {
-        index = index !== undefined ? index: this._items.length;
+    insertItem: function (options) {
 
-        var item = this._createItem(this._container, options, index);
+        index = options.index !== undefined ? options.index : this._items.length;
+
+        var item = this._createItem({
+            container: this._container,
+            options: options.options,
+            index: index,
+            isNotMainItem: options.isNotMainItem
+        });
 
         this._items.push(item);
 
@@ -151,6 +157,35 @@ L.Map.ContextMenu = L.Handler.extend({
         return null;
     },
 
+    itemAvailable: function (item) {
+        var container = this._container;
+
+        if (!isNaN(item)) {
+            item = container.children[item];
+        }
+
+        if (item) {
+            return true;
+        }
+
+        return false;
+    },
+
+    hideItem: function (item) {
+        var container = this._container;
+
+        if (!isNaN(item)) {
+            item = container.children[item];
+        }
+
+        if (item) {
+            item.style.display = "none";
+            return item;
+        }
+
+        return null;
+    },
+
     removeAllItems: function () {
         var items = this._container.children,
             item;
@@ -180,9 +215,20 @@ L.Map.ContextMenu = L.Handler.extend({
         }
     },
 
+    showAllMainItems: function () {
+        var item, i, l;
+
+        for (i = 0, l = this._items.length; i < l; i++) {
+            item = this._items[i];
+            if (item.isMainItem) {
+                item.el.style.display = '';
+            }
+        }
+    },
+
     setDisabled: function (item, disabled) {
         var container = this._container,
-        itemCls = L.Map.ContextMenu.BASE_CLS + '-item';
+            itemCls = L.Map.ContextMenu.BASE_CLS + '-item';
 
         if (!isNaN(item)) {
             item = container.children[item];
@@ -215,22 +261,34 @@ L.Map.ContextMenu = L.Handler.extend({
             i, l;
 
         for (i = 0, l = itemOptions.length; i < l; i++) {
-            this._items.push(this._createItem(this._container, itemOptions[i]));
+            this._items.push(this._createItem({
+                container: this._container,
+                options: itemOptions[i]
+            }));
         }
     },
 
-    _createItem: function (container, options, index) {
-        if (options.separator || options === '-') {
-            return this._createSeparator(container, index);
+    _createItem: function (options) {
+        if (options.options.separator || options.options === '-') {
+            return this._createSeparator({
+                container: options.container,
+                index: options.index,
+                isNotMainItem: options.isNotMainItem
+            });
         }
 
         var itemCls = L.Map.ContextMenu.BASE_CLS + '-item',
-            cls = options.disabled ? (itemCls + ' ' + itemCls + '-disabled') : itemCls,
-            el = this._insertElementAt('a', cls, container, index),
-            callback = this._createEventHandler(el, options.callback, options.context, options.hideOnSelect),
-            icon = this._getIcon(options),
-            iconCls = this._getIconCls(options),
+            cls = options.options.disabled ? (itemCls + ' ' + itemCls + '-disabled') : itemCls,
+            el = this._insertElementAt('a', cls, options.container, options.index),
+            callback = this._createEventHandler(el, options.options.callback, options.options.context, options.options.hideOnSelect),
+            icon = this._getIcon(options.options),
+            iconCls = this._getIconCls(options.options),
             html = '';
+
+        //add custom classes
+        if (options.options.cls) {
+            el.className += " " + options.options.cls;
+        }
 
         if (icon) {
             html = '<img class="' + L.Map.ContextMenu.BASE_CLS + '-icon" src="' + icon + '"/>';
@@ -238,7 +296,7 @@ L.Map.ContextMenu = L.Handler.extend({
             html = '<span class="' + L.Map.ContextMenu.BASE_CLS + '-icon ' + iconCls + '"></span>';
         }
 
-        el.innerHTML = html + options.text;
+        el.innerHTML = html + options.options.text;
         el.href = '#';
 
         L.DomEvent
@@ -256,10 +314,12 @@ L.Map.ContextMenu = L.Handler.extend({
             L.DomEvent.on(el, 'click', this._onItemMouseOut, this);
         }
 
+
         return {
             id: L.Util.stamp(el),
             el: el,
-            callback: callback
+            callback: callback,
+            isMainItem: !options.isNotMainItem
         };
     },
 
@@ -300,12 +360,13 @@ L.Map.ContextMenu = L.Handler.extend({
         return null;
     },
 
-    _createSeparator: function (container, index) {
-        var el = this._insertElementAt('div', L.Map.ContextMenu.BASE_CLS + '-separator', container, index);
+    _createSeparator: function (options) {
+        var el = this._insertElementAt('div', L.Map.ContextMenu.BASE_CLS + '-separator', options.container, options.index);
 
         return {
             id: L.Util.stamp(el),
-            el: el
+            el: el,
+            isMainItem: !options.isNotMainItem
         };
     },
 
@@ -361,9 +422,11 @@ L.Map.ContextMenu = L.Handler.extend({
     _showAtPoint: function (pt, data) {
         if (this._items.length) {
             var map = this._map,
-            layerPoint = map.containerPointToLayerPoint(pt),
-            latlng = map.layerPointToLatLng(layerPoint),
-            event = L.extend(data || {}, {contextmenu: this});
+                layerPoint = map.containerPointToLayerPoint(pt),
+                latlng = map.layerPointToLatLng(layerPoint),
+                event = L.extend(data || {}, {
+                    contextmenu: this
+                });
 
             this._showLocation = {
                 latlng: latlng,
@@ -371,7 +434,7 @@ L.Map.ContextMenu = L.Handler.extend({
                 containerPoint: pt
             };
 
-            if (data && data.relatedTarget){
+            if (data && data.relatedTarget) {
                 this._showLocation.relatedTarget = data.relatedTarget;
             }
 
@@ -390,7 +453,9 @@ L.Map.ContextMenu = L.Handler.extend({
         if (this._visible) {
             this._visible = false;
             this._container.style.display = 'none';
-            this._map.fire('contextmenu.hide', {contextmenu: this});
+            this._map.fire('contextmenu.hide', {
+                contextmenu: this
+            });
         }
     },
 
@@ -482,26 +547,26 @@ L.Mixin.ContextMenu = {
         return this;
     },
 
-    unbindContextMenu: function (){
+    unbindContextMenu: function () {
         this.off('contextmenu', this._showContextMenu, this);
 
         return this;
     },
 
     addContextMenuItem: function (item) {
-            this.options.contextmenuItems.push(item);
+        this.options.contextmenuItems.push(item);
     },
 
     removeContextMenuItemWithIndex: function (index) {
         var items = [];
         for (var i = 0; i < this.options.contextmenuItems.length; i++) {
-            if (this.options.contextmenuItems[i].index == index){
+            if (this.options.contextmenuItems[i].index == index) {
                 items.push(i);
             }
         }
         var elem = items.pop();
         while (elem !== undefined) {
-            this.options.contextmenuItems.splice(elem,1);
+            this.options.contextmenuItems.splice(elem, 1);
             elem = items.pop();
         }
     },
@@ -522,7 +587,9 @@ L.Mixin.ContextMenu = {
             data, pt, i, l;
 
         if (this._map.contextmenu) {
-            data = L.extend({relatedTarget: this}, e);
+            data = L.extend({
+                relatedTarget: this
+            }, e);
 
             pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
@@ -531,8 +598,24 @@ L.Mixin.ContextMenu = {
             }
 
             for (i = 0, l = this.options.contextmenuItems.length; i < l; i++) {
-                itemOptions = this.options.contextmenuItems[i];
-                this._items.push(this._map.contextmenu.insertItem(itemOptions, itemOptions.index));
+                //add item only if it doesn't exist
+                if (!this._map.contextmenu.itemAvailable(this._items[i])) {
+                    itemOptions = this.options.contextmenuItems[i];
+                    
+                    var options = {
+                        options: itemOptions, 
+                        index: itemOptions.index,
+                        isNotMainItem: true
+                    }
+                    
+                    
+                    this._items.push(this._map.contextmenu.insertItem(options));
+                }
+                //show it if it exists
+                else {
+                    this._items[i].style.display = "block";
+                }
+
             }
 
             this._map.once('contextmenu.hide', this._hideContextMenu, this);
@@ -543,15 +626,16 @@ L.Mixin.ContextMenu = {
 
     _hideContextMenu: function () {
         var i, l;
-
+        
         for (i = 0, l = this._items.length; i < l; i++) {
-            this._map.contextmenu.removeItem(this._items[i]);
+            this._map.contextmenu.hideItem(this._items[i]);
         }
-        this._items.length = 0;
 
         if (!this.options.contextmenuInheritItems) {
-            this._map.contextmenu.showAllItems();
+            this._map.contextmenu.showAllMainItems();
         }
+        
+        
     }
 };
 

@@ -6,26 +6,26 @@ L.Mixin.ContextMenu = {
         return this;
     },
 
-    unbindContextMenu: function (){
+    unbindContextMenu: function () {
         this.off('contextmenu', this._showContextMenu, this);
 
         return this;
     },
 
     addContextMenuItem: function (item) {
-            this.options.contextmenuItems.push(item);
+        this.options.contextmenuItems.push(item);
     },
 
     removeContextMenuItemWithIndex: function (index) {
         var items = [];
         for (var i = 0; i < this.options.contextmenuItems.length; i++) {
-            if (this.options.contextmenuItems[i].index == index){
+            if (this.options.contextmenuItems[i].index == index) {
                 items.push(i);
             }
         }
         var elem = items.pop();
         while (elem !== undefined) {
-            this.options.contextmenuItems.splice(elem,1);
+            this.options.contextmenuItems.splice(elem, 1);
             elem = items.pop();
         }
     },
@@ -46,7 +46,9 @@ L.Mixin.ContextMenu = {
             data, pt, i, l;
 
         if (this._map.contextmenu) {
-            data = L.extend({relatedTarget: this}, e);
+            data = L.extend({
+                relatedTarget: this
+            }, e);
 
             pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
@@ -55,8 +57,24 @@ L.Mixin.ContextMenu = {
             }
 
             for (i = 0, l = this.options.contextmenuItems.length; i < l; i++) {
-                itemOptions = this.options.contextmenuItems[i];
-                this._items.push(this._map.contextmenu.insertItem(itemOptions, itemOptions.index));
+                //add item only if it doesn't exist
+                if (!this._map.contextmenu.itemAvailable(this._items[i])) {
+                    itemOptions = this.options.contextmenuItems[i];
+                    
+                    var options = {
+                        options: itemOptions, 
+                        index: itemOptions.index,
+                        isNotMainItem: true
+                    }
+                    
+                    
+                    this._items.push(this._map.contextmenu.insertItem(options));
+                }
+                //show it if it exists
+                else {
+                    this._items[i].style.display = "block";
+                }
+
             }
 
             this._map.once('contextmenu.hide', this._hideContextMenu, this);
@@ -67,15 +85,16 @@ L.Mixin.ContextMenu = {
 
     _hideContextMenu: function () {
         var i, l;
-
+        
         for (i = 0, l = this._items.length; i < l; i++) {
-            this._map.contextmenu.removeItem(this._items[i]);
+            this._map.contextmenu.hideItem(this._items[i]);
         }
-        this._items.length = 0;
 
         if (!this.options.contextmenuInheritItems) {
-            this._map.contextmenu.showAllItems();
+            this._map.contextmenu.showAllMainItems();
         }
+        
+        
     }
 };
 
