@@ -231,6 +231,11 @@ L.Map.ContextMenu = L.Handler.extend({
             icon = this._getIcon(options),
             iconCls = this._getIconCls(options),
             html = '';
+        
+        //add custom classes
+        if(options.cls){
+            el.className += " " + options.cls;
+        }
 
         if (icon) {
             html = '<img class="' + L.Map.ContextMenu.BASE_CLS + '-icon" src="' + icon + '"/>';
