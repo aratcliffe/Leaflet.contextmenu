@@ -529,6 +529,10 @@ L.Mixin.ContextMenu = {
             if (!this.options.contextmenuInheritItems) {
                 this._map.contextmenu.hideAllItems();
             }
+            
+            if(this.options.contextmenuWidth) {
+                this._map.contextmenu._container.style.width = this.options.contextmenuWidth + 'px';
+            }
 
             for (i = 0, l = this.options.contextmenuItems.length; i < l; i++) {
                 itemOptions = this.options.contextmenuItems[i];
