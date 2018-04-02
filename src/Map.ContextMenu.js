@@ -46,7 +46,6 @@ L.Map.ContextMenu = L.Handler.extend({
         this._map.on({
             contextmenu: this._show,
             mousedown: this._hide,
-            movestart: this._hide,
             zoomstart: this._hide
         }, this);
     },
@@ -65,7 +64,6 @@ L.Map.ContextMenu = L.Handler.extend({
         this._map.off({
             contextmenu: this._show,
             mousedown: this._hide,
-            movestart: this._hide,
             zoomstart: this._hide
         }, this);
     },
