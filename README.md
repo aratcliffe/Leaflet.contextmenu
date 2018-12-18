@@ -83,6 +83,7 @@ L.marker(ll, {
 | retinaIcon | String | `undefined` | Url for a retina-sized version (32x32px) icon to display to the left of the label.
 | iconCls | String | `undefined` | A CSS class which sets the background image for the icon (exclusive of the `icon` option).
 | retinaIconCls | String | `undefined` | A CSS class which sets the background image for a retina version of the icon (exclusive of the `retinaIcon` option).
+| itemCls | String | `undefined` | A CSS class that will be applied to the context menu item.
 | callback | Function | `undefined` | A callback function to be invoked when the menu item is clicked. The callback is passed an object with properties identifying the location the menu was opened at: `latlng`, `layerPoint` and `containerPoint`.
 | context | Object | The map | The scope the callback will be executed in.
 | disabled | Bool | `false` | If `true` the menu item will initially be in a disabled state and will not respond to click events.
