@@ -79,7 +79,7 @@ L.Mixin.ContextMenu = {
     }
 };
 
-var classes = [L.Marker, L.Path],
+var classes = [L.Marker, L.Path, L.ImageOverlay],
     defaultOptions = {
         contextmenu: false,
         contextmenuItems: [],
