@@ -1,6 +1,6 @@
 {
   "name": "leaflet-contextmenu",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "A context menu for Leaflet",
   "main": "dist/leaflet.contextmenu.js",
   "directories": {
@@ -8,12 +8,12 @@
   },
   "scripts": {
     "concat": "cat src/copyright.js src/Map.ContextMenu.js src/Mixin.ContextMenu.js src/end.js > dist/leaflet.contextmenu.js",
-    "compress": "node_modules/uglify-js/bin/uglifyjs dist/leaflet.contextmenu.js -m --comments -o dist/leaflet.contextmenu.min.js; node_modules/uglifycss/uglifycss dist/leaflet.contextmenu.css > dist/leaflet.contextmenu.min.css",
+    "compress": "node_modules/uglify-js/bin/uglifyjs dist/leaflet.contextmenu.js -m --comments -o dist/leaflet.contextmenu.min.js",
     "build": "npm run concat && npm run compress"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aratcliffe/Leaflet.contextmenu.git"
+    "url": "https://github.com/gunyakov/Leaflet.contextmenu.git"
   },
   "keywords": [
     "leaflet",
@@ -22,14 +22,14 @@
     "context",
     "menu"
   ],
-  "author": "Adam Ratcliffe",
+  "author": "Adam Ratcliffe, Oleg Gunyakov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/aratcliffe/Leaflet.contextmenu/issues"
+    "url": "https://github.com/gunyakov/Leaflet.contextmenu/issues"
   },
-  "homepage": "https://github.com/aratcliffe/Leaflet.contextmenu",
+  "homepage": "https://github.com/gunyakov/Leaflet.contextmenu",
   "devDependencies": {
-    "uglify-js": "^2.7.4",
-    "uglifycss": "^0.0.25"
+    "uglifycss": "^0.0.25",
+    "uglify-js": "^3.15.1"
   }
 }

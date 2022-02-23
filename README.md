@@ -3,7 +3,9 @@
 [![npm](https://img.shields.io/npm/v/leaflet-contextmenu.svg)](https://www.npmjs.com/package/leaflet-contextmenu)
 [![Bower](https://img.shields.io/bower/v/leaflet.contextmenu.svg)](https://libraries.io/bower/Leaflet.contextmenu)
 
-A context menu for Leaflet. See the [demo](http://aratcliffe.github.io/Leaflet.contextmenu/examples/index.html).
+A context menu for Leaflet. See the [demo](http://gunyakov.github.io/Leaflet.contextmenu/examples/index.html).
+
+## Updated to use Bootstrap dropdown CSS style
 
 Now supporting Leaflet 1.0
 

@@ -1,7 +1,7 @@
 /*
 	Leaflet.contextmenu, a context menu for Leaflet.
 	(c) 2015, Adam Ratcliffe, GeoSmart Maps Limited
-
+	(c) 2021, Oleg Gunyakov, Maptorium Tile Downloader
 	@preserve
 */
 

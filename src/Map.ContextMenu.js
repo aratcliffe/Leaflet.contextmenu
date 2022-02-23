@@ -6,7 +6,7 @@ L.Map.ContextMenu = L.Handler.extend({
     _touchstart: L.Browser.msPointer ? 'MSPointerDown' : L.Browser.pointer ? 'pointerdown' : 'touchstart',
 
     statics: {
-        BASE_CLS: 'leaflet-contextmenu'
+        BASE_CLS: 'dropdown-menu'
     },
 
     initialize: function (map) {
@@ -155,7 +155,7 @@ L.Map.ContextMenu = L.Handler.extend({
 
     setDisabled: function (item, disabled) {
         var container = this._container,
-        itemCls = L.Map.ContextMenu.BASE_CLS + '-item';
+        itemCls = 'dropdown-item';
 
         if (!isNaN(item)) {
             item = container.children[item];
@@ -163,13 +163,13 @@ L.Map.ContextMenu = L.Handler.extend({
 
         if (item && L.DomUtil.hasClass(item, itemCls)) {
             if (disabled) {
-                L.DomUtil.addClass(item, itemCls + '-disabled');
+                L.DomUtil.addClass(item, 'disabled');
                 this._map.fire('contextmenu.disableitem', {
                     contextmenu: this,
                     el: item
                 });
             } else {
-                L.DomUtil.removeClass(item, itemCls + '-disabled');
+                L.DomUtil.removeClass(item, 'disabled');
                 this._map.fire('contextmenu.enableitem', {
                     contextmenu: this,
                     el: item
@@ -197,21 +197,22 @@ L.Map.ContextMenu = L.Handler.extend({
             return this._createSeparator(container, index);
         }
 
-        var itemCls = L.Map.ContextMenu.BASE_CLS + '-item',
-            cls = options.disabled ? (itemCls + ' ' + itemCls + '-disabled') : itemCls,
-            el = this._insertElementAt('a', cls, container, index),
+        var itemCls = 'dropdown-item',
+            cls = options.disabled ? (itemCls + ' disabled') : itemCls,
+            cls = options.class ? (itemCls + ' ' + options.class) : itemCls,
+            el = this._insertElementAt('button', cls, container, index),
             callback = this._createEventHandler(el, options.callback, options.context, options.hideOnSelect),
             icon = this._getIcon(options),
             iconCls = this._getIconCls(options),
             html = '';
 
         if (icon) {
-            html = '<img class="' + L.Map.ContextMenu.BASE_CLS + '-icon" src="' + icon + '"/>';
+            html = '<img class="' + L.Map.ContextMenu.BASE_CLS + '" src="' + icon + '"/>';
         } else if (iconCls) {
-            html = '<span class="' + L.Map.ContextMenu.BASE_CLS + '-icon ' + iconCls + '"></span>';
+            html = '<i class="' + iconCls + '"></i>';
         }
 
-        el.innerHTML = html + options.text;
+        el.innerHTML = html + " " + options.text;
         el.href = '#';
 
         L.DomEvent
@@ -274,7 +275,7 @@ L.Map.ContextMenu = L.Handler.extend({
     },
 
     _createSeparator: function (container, index) {
-        var el = this._insertElementAt('div', L.Map.ContextMenu.BASE_CLS + '-separator', container, index);
+        var el = this._insertElementAt('div', 'dropdown-divider', container, index);
 
         return {
             id: L.Util.stamp(el),
@@ -285,7 +286,7 @@ L.Map.ContextMenu = L.Handler.extend({
     _createEventHandler: function (el, func, context, hideOnSelect) {
         var me = this,
             map = this._map,
-            disabledCls = L.Map.ContextMenu.BASE_CLS + '-item-disabled',
+            disabledCls = 'disabled',
             hideOnSelect = (hideOnSelect !== undefined) ? hideOnSelect : true;
 
         return function (e) {
