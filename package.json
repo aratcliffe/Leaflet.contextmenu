@@ -1,5 +1,5 @@
 {
-  "name": "leaflet-contextmenu",
+  "name": "leaflet-contextmenu-bootstrap",
   "version": "1.5.2",
   "description": "A context menu for Leaflet",
   "main": "dist/leaflet.contextmenu.js",
