@@ -1,7 +1,7 @@
 /*
 	Leaflet.contextmenu, a context menu for Leaflet.
 	(c) 2015, Adam Ratcliffe, GeoSmart Maps Limited
-	(c) 2021, Oleg Gunyakov, Maptorium Tile Downloader
+	(c) 2021-2022, Oleg Gunyakov, Maptorium Tile Downloader
 	@preserve
 */
 
@@ -232,12 +232,12 @@ L.Map.ContextMenu = L.Handler.extend({
             html = '';
 
         if (icon) {
-            html = '<img class="' + L.Map.ContextMenu.BASE_CLS + '" src="' + icon + '"/>';
+            html = '<img src="' + icon + '"/>';
         } else if (iconCls) {
             html = '<i class="' + iconCls + '"></i>';
         }
 
-        el.innerHTML = html + " " + options.text;
+        el.innerHTML = html + "<span>&nbsp;" + options.text + "</span>";
         el.href = '#';
 
         L.DomEvent
