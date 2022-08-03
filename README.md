@@ -1,9 +1,10 @@
 # Leaflet.contextmenu
 [![npm](https://img.shields.io/npm/v/leaflet-contextmenu-bootstrap.svg)](https://www.npmjs.com/package/leaflet-contextmenu-bootstrap)
 
-A context menu for Leaflet. See the [demo](http://gunyakov.github.io/Leaflet.contextmenu/examples/index.html).
+A context menu for Leaflet based on Bootstrap dropdowns. See the [demo](http://gunyakov.github.io/Leaflet.contextmenu/examples/index.html).
 
 ## Updated to use Bootstrap dropdown CSS style
+##Find bug. When activate map menu together with polygon menu, callback functions dont receive relatedTarget object.
 
 Now supporting Leaflet 1.0
 
