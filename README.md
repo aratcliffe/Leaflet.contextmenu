@@ -4,9 +4,10 @@
 A context menu for Leaflet based on Bootstrap dropdowns. See the [demo](http://gunyakov.github.io/Leaflet.contextmenu/examples/index.html).
 
 ## Updated to use Bootstrap dropdown CSS style
+
 ##Find bug. When activate map menu together with polygon menu, callback functions dont receive relatedTarget object.
 
-Now supporting Leaflet 1.0
+Full compatible with Leaflet 1.7.*
 
 ## Usage
 The context menu is implemented as a map interaction handler.  To use the plugin include the script and enable using the map `contextmenu` option.
