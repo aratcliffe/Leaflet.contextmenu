@@ -7,6 +7,8 @@ A context menu for Leaflet based on Bootstrap dropdowns. See the [demo](http://g
 
 ##Find bug. When activate map menu together with polygon menu, callback functions dont receive relatedTarget object.
 
+##Multi level bootstrap dropdowns supported
+
 Full compatible with Leaflet 1.7.*
 
 ## Usage
