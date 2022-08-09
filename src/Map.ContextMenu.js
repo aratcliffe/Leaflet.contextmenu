@@ -27,6 +27,8 @@ L.Map.ContextMenu = L.Handler.extend({
 
         this._container = this._initContainer(map._container);
 
+        this._relatedTarget = false;
+
         if (map.options.contextmenuWidth) {
             this._container.style.width = map.options.contextmenuWidth + 'px';
         }
@@ -374,7 +376,7 @@ L.Map.ContextMenu = L.Handler.extend({
                 containerPoint = me._showLocation.containerPoint,
                 layerPoint = map.containerPointToLayerPoint(containerPoint),
                 latlng = map.layerPointToLatLng(layerPoint),
-                relatedTarget = me._showLocation.relatedTarget,
+                relatedTarget = me._relatedTarget,
                 data = {
                   containerPoint: containerPoint,
                   layerPoint: layerPoint,
@@ -434,7 +436,7 @@ L.Map.ContextMenu = L.Handler.extend({
             };
 
             if (data && data.relatedTarget){
-                this._showLocation.relatedTarget = data.relatedTarget;
+                this._relatedTarget = data.relatedTarget;
             }
 
             this._setPosition(pt);

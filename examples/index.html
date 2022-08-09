@@ -20,10 +20,12 @@
           ll2 = new L.LatLng(50.079947, 36.398392);
 
       function showCoordinates (e) {
+        console.log(e.relatedTarget);
 	      alert(e.latlng);
       }
 
       function centerMap (e) {
+        console.log(e.relatedTarget);
 	      map.panTo(e.latlng);
       }
 
