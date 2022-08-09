@@ -253,7 +253,7 @@ L.Map.ContextMenu = L.Handler.extend({
 
         let callback = false;
         if(!subMenu) {
-          callback = this._createEventHandler(el, options.callback, options.context, options.hideOnSelect);
+          callback = this._createEventHandler(el, options.callback, options.context, options.hideOnSelect, options.data);
         }
         let icon = this._getIcon(options);
         let iconCls = this._getIconCls(options);
@@ -386,7 +386,7 @@ L.Map.ContextMenu = L.Handler.extend({
         };
     },
 
-    _createEventHandler: function (el, func, context, hideOnSelect) {
+    _createEventHandler: function (el, func, context, hideOnSelect, itemData) {
         var me = this,
             map = this._map,
             disabledCls = 'disabled',
@@ -406,7 +406,8 @@ L.Map.ContextMenu = L.Handler.extend({
                   containerPoint: containerPoint,
                   layerPoint: layerPoint,
                   latlng: latlng,
-                  relatedTarget: relatedTarget
+                  relatedTarget: relatedTarget,
+                  data: itemData
                 };
 
             if (hideOnSelect) {

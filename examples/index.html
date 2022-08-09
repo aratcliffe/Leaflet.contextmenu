@@ -21,7 +21,12 @@
 
       function showCoordinates (e) {
         console.log(e.relatedTarget);
-	      alert(e.latlng);
+        if(e.data) {
+          alert(`Test of data in options. Name: ${e.data.name}`);
+        }
+        else {
+          alert(e.latlng);
+        }
       }
 
       function centerMap (e) {
@@ -49,7 +54,8 @@
           contextmenuItems: [{
     		      text: 'Coordinates sub 1',
               iconCls: "bi bi-pin-map",
-    		      callback: showCoordinates
+    		      callback: showCoordinates,
+              data: {name: "test data"}
             },
             {
     		      text: 'Coordinates sub 2',
