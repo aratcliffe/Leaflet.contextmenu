@@ -1,11 +1,15 @@
 # Leaflet.contextmenu
-[![CDNJS](https://img.shields.io/cdnjs/v/leaflet-contextmenu.svg)](https://cdnjs.com/libraries/leaflet-contextmenu)
-[![npm](https://img.shields.io/npm/v/leaflet-contextmenu.svg)](https://www.npmjs.com/package/leaflet-contextmenu)
-[![Bower](https://img.shields.io/bower/v/leaflet.contextmenu.svg)](https://libraries.io/bower/Leaflet.contextmenu)
+[![npm](https://img.shields.io/npm/v/leaflet-contextmenu-bootstrap.svg)](https://www.npmjs.com/package/leaflet-contextmenu-bootstrap)
 
-A context menu for Leaflet. See the [demo](http://aratcliffe.github.io/Leaflet.contextmenu/examples/index.html).
+A context menu for Leaflet based on Bootstrap dropdowns. See the [demo](http://gunyakov.github.io/Leaflet.contextmenu/examples/index.html).
 
-Now supporting Leaflet 1.0
+## Updated to use Bootstrap dropdown CSS style
+
+##Find bug. When activate map menu together with polygon menu, callback functions dont receive relatedTarget object.
+
+##Multi level bootstrap dropdowns supported
+
+Full compatible with Leaflet 1.7.*
 
 ## Usage
 The context menu is implemented as a map interaction handler.  To use the plugin include the script and enable using the map `contextmenu` option.
@@ -85,6 +89,7 @@ L.marker(ll, {
 | retinaIconCls | String | `undefined` | A CSS class which sets the background image for a retina version of the icon (exclusive of the `retinaIcon` option).
 | callback | Function | `undefined` | A callback function to be invoked when the menu item is clicked. The callback is passed an object with properties identifying the location the menu was opened at: `latlng`, `layerPoint` and `containerPoint`.
 | context | Object | The map | The scope the callback will be executed in.
+| data| Any | `undefined` | Data whitch be sended to callback function.
 | disabled | Bool | `false` | If `true` the menu item will initially be in a disabled state and will not respond to click events.
 | separator | Bool | `undefined` | If `true` a separator will be created instead of a menu item.
 | hideOnSelect | Bool | `true` | If `true` the context menu will be automatically hidden when a menu item is selected

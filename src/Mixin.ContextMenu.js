@@ -53,16 +53,22 @@ L.Mixin.ContextMenu = {
             if (!this.options.contextmenuInheritItems) {
                 this._map.contextmenu.hideAllItems();
             }
-
-            for (i = 0, l = this.options.contextmenuItems.length; i < l; i++) {
-                itemOptions = this.options.contextmenuItems[i];
-                this._items.push(this._map.contextmenu.insertItem(itemOptions, itemOptions.index));
-            }
+            this._subMenu(this.options.contextmenuItems);
 
             this._map.once('contextmenu.hide', this._hideContextMenu, this);
-
+            var subContainer = document.querySelectorAll(".show");
+            for (var i = 0; i < subContainer.length; i++) {
+              L.DomUtil.removeClass(subContainer[i], "show");
+            }
             this._map.contextmenu.showAt(pt, data);
         }
+    },
+
+    _subMenu: function(contextmenuItems) {
+      for (i = 0, l = contextmenuItems.length; i < l; i++) {
+          itemOptions = contextmenuItems[i];
+          this._items.push(this._map.contextmenu.insertItem(itemOptions, itemOptions.index));
+      }
     },
 
     _hideContextMenu: function () {

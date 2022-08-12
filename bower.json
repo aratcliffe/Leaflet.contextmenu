@@ -1,8 +1,8 @@
 {
   "name": "leaflet.contextmenu",
-  "homepage": "https://github.com/aratcliffe/Leaflet.contextmenu",
-  "description": "A context menu for Leaflet",
-  "main": ["dist/leaflet.contextmenu.js", "dist/leaflet.contextmenu.css"],
+  "homepage": "https://github.com/gunyakov/Leaflet.contextmenu",
+  "description": "A context menu for Leaflet with Bootstrap CSS and Bootstrap Icons support",
+  "main": ["dist/leaflet.contextmenu.js"],
   "keywords": [
     "gis"
   ],

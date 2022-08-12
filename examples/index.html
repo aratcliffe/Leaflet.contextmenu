@@ -2,24 +2,35 @@
 <html>
   <head>
     <title>Leaflet Context Menu</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css"/>
-    <link rel="stylesheet" href="../dist/leaflet.contextmenu.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
   </head>
   <body>
-    <div id="map" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
-    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <div id="map" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+</div>
+
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="../dist/leaflet.contextmenu.js"></script>
     <script>
       var map,
           cm,
-          ll = new L.LatLng(-36.852668, 174.762675),
-          ll2 = new L.LatLng(-36.86, 174.77);
+          ll = new L.LatLng(50.08, 36.38),
+          ll2 = new L.LatLng(50.079947, 36.398392);
 
       function showCoordinates (e) {
-	      alert(e.latlng);
+        console.log(e.relatedTarget);
+        if(e.data) {
+          alert(`Test of data in options. Name: ${e.data.name}`);
+        }
+        else {
+          alert(e.latlng);
+        }
       }
 
       function centerMap (e) {
+        console.log(e.relatedTarget);
 	      map.panTo(e.latlng);
       }
 
@@ -35,22 +46,61 @@
 	      center: ll,
 	      zoom: 15,
 	      contextmenu: true,
-      contextmenuWidth: 140,
+        //contextmenuWidth: 240,
 	      contextmenuItems: [{
 		      text: 'Show coordinates',
-		      callback: showCoordinates
+          iconCls: "bi bi-pin-map",
+		      callback: showCoordinates,
+          contextmenuItems: [{
+    		      text: 'Coordinates sub 1',
+              iconCls: "bi bi-pin-map",
+    		      callback: showCoordinates,
+              data: {name: "test data"}
+            },
+            {
+    		      text: 'Coordinates sub 2',
+    		      callback: showCoordinates
+          }]
 	      }, {
 		      text: 'Center map here',
+          iconCls: "bi bi-align-center",
 		      callback: centerMap
 	      }, '-', {
 		      text: 'Zoom in',
-		      icon: 'images/zoom-in.png',
+          iconCls: "bi bi-zoom-out",
 		      callback: zoomIn
 	      }, {
 		      text: 'Zoom out',
-		      icon: 'images/zoom-out.png',
+          iconCls: "bi bi-zoom-in",
 		      callback: zoomOut
-	  }]
+        },
+        {
+          text: "Test of sub menu",
+          contextmenuItems: [{
+    		      text: 'Center map here sub 1',
+              iconCls: "bi bi-align-center",
+              contextmenuItems: [{
+        		      text: 'SubSub11',
+        		      callback: centerMap
+                },
+                {
+        		      text: 'SubSub21',
+                  iconCls: "bi bi-align-center",
+        		      callback: centerMap
+              }]
+            },
+            {
+    		      text: 'Center map here sub 2',
+              contextmenuItems: [{
+        		      text: 'SubSub21',
+        		      callback: centerMap
+                },
+                {
+        		      text: 'SubSub22',
+        		      callback: centerMap
+              }]
+          }]
+        }]
       });
 
 	  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -65,6 +115,25 @@
           }, {
               separator: true,
               index: 1
+          },
+          {
+            text: "Test of sub menu marker",
+            index: 2,
+            contextmenuItems: [{
+      		      text: 'Center marker 1',
+      		      callback: centerMap
+              },
+              {
+      		      text: 'Sub',
+                contextmenuItems: [{
+          		      text: 'SubMarker1',
+          		      callback: centerMap
+                  },
+                  {
+          		      text: 'SubMarker2',
+          		      callback: centerMap
+                }]
+            }]
           }]
       }).addTo(map);
 
@@ -72,10 +141,20 @@
           contextmenu: true,
           contextmenuInheritItems: false,
           contextmenuItems: [{
-              text: 'Marker item'
+              text: 'Marker item',
+              /*contextmenuItems: [{
+        		      text: 'Center map here sub 1',
+        		      callback: centerMap
+                },
+                {
+        		      text: 'Center map here sub 2',
+        		      callback: centerMap
+              }]*/
           }]
       }).addTo(map);
 
     </script>
+
+
   </body>
 </html>
