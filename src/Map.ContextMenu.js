@@ -297,7 +297,7 @@ L.Map.ContextMenu = L.Handler.extend({
                 containerPoint = me._showLocation.containerPoint,
                 layerPoint = map.containerPointToLayerPoint(containerPoint),
                 latlng = map.layerPointToLatLng(layerPoint),
-                relatedTarget = me._showLocation.relatedTarget,
+                relatedTarget = me._showLocation.relatedTarget || map,
                 data = {
                   containerPoint: containerPoint,
                   layerPoint: layerPoint,
